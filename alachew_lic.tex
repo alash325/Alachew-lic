@@ -1,0 +1,91 @@
+%%% demothesis.tex --- 
+%% 
+%% Filename: demothesis.tex
+%% Description: 
+%% Author: Ola Leifler
+%% Maintainer: 
+%% Created: Thu Oct 14 12:52:20 2010 (CEST)
+%% Version: $Id$
+%% Version: 
+%% Last-Updated: Thu Jun 15 16:32:59 2017 (+0200)
+%%           By: Ola Leifler
+%%     Update #: 182
+%% URL: 
+%% Keywords: 
+%% Compatibility: 
+%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%%% Commentary: 
+%% 
+%% 
+%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%%% Change log:
+%% 
+%% 
+%% RCS $Log$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%%% Code:
+\documentclass[lic,lith,english]{liuthesis}
+%% Settings go in settings.tex
+\include{settings}
+\setcounter{secnumdepth}{3}
+
+\usepackage{lscape}
+\usepackage[utf8]{inputenc}
+\usepackage[acronym, toc]{glossaries}
+\usepackage{listings}
+\makeglossaries
+\input{acronym.tex}
+%\include{acronym.tex}
+
+
+
+
+\department{Institutionen för datavetenskap}
+\departmentenglish{Department of Computer and Information Science}
+\edition{1:1}
+
+% \supervisor{Min handledare}
+\titleenglish{Towards Efficient Model-Based Development of Cyber-Physical Systems with emphasis on Model and Tool Integration  \newline  Methods and Tools for Efficient Model-Based Development of Cyber-Physical Systems with emphasis on Model and Tool Integration}
+\division{Division for Software and Systems (SaS)}
+\thesisnumber{111111}
+
+% Include a dedication if you wish
+% \dedication{I dedicate this thesis to ...}
+
+\publicationyear{2018}
+\isbn{123456}
+\divanumber{456789}
+\author{Författaren}
+
+\begin{document}
+
+% Choose any chapter style compatible with Memoir that you like
+\chapterstyle{VZ43}
+
+% Include your chapters here
+\printglossary[type=\acronymtype]
+\include{introduction}
+\include{background}
+\include{optimization}
+\include{tlm}
+\include{traceability}
+\include{python}
+\include{conclusion_future_work}
+
+% And print the references (by default in references.bib)
+\printbibliography
+
+% Demonstrates the use of included publications, for graduate-level theses
+% \includearticle{scigen}
+% \includearticletex{scigen}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% demothesis.tex ends here
+
