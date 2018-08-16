@@ -6,9 +6,9 @@
 %% Maintainer:
 %% Created: Fri Mar 20 08:25:23 2009 (CET)
 %% Version:
-%% Last-Updated: Tue Aug 22 11:45:32 2017 (+0200)
+%% Last-Updated: Mon Apr 16 15:04:30 2018 (+0200)
 %%           By: Ola Leifler
-%%     Update #: 1530
+%%     Update #: 1560
 %% URL:
 %% Keywords:
 %% Compatibility:
@@ -93,6 +93,13 @@
 \createvariable{opponentuniversity}
 \createvariable{opponentcountry}
 \createvariable{thesisnumber}
+
+\createvariable{subseries}
+\createvariable{subseriesnumber}
+
+\newif\ifsubseries
+\subseriesfalse
+
 \createvariable{currentyearthesisnumber}
 \createvariable{supportedby}
 \createvariable{publicationyear}
@@ -155,6 +162,7 @@
 \studenttrue
 \newif\ifprinterfriendly
 \printerfriendlyfalse
+
 
 \DeclareOption{hu}{%
   \hutrue
@@ -558,7 +566,11 @@
 \newcommand{\exhibitpagefilfak}{%
   \begin{center}
     \tryfonts{KorolevLiU}{Calibri}
-      \@publicationseries{} No. \@thesisnumber\\[3\baselineskip]
+      \@publicationseries{} No. \@thesisnumber
+      \ifsubseries
+          \\\@subseries{} No. \@subseriesnumber
+      \fi
+\\[3\baselineskip]
       {\Large\@titleswedish\\
         \@subtitleswedish}\\[5mm]\fi
       \small
@@ -573,6 +585,7 @@
     \vfill
     \begin{flushleft}
       Nyckelord: \@keywordsswedish\\[3mm]
+      URL:    \texttt{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-\@divanumber}
     \end{flushleft}
     \includegraphics[width=35mm]{liu_primary_black_sv}\\
     \@department\\
@@ -580,7 +593,11 @@
     ISBN \@isbn{} ISSN \@issn
   \clearpage{}
   \normalsize
-   {\@publicationseries{} No. \@thesisnumber}\\[3\baselineskip]
+   {\@publicationseries{} No. \@thesisnumber 
+      \ifsubseries
+          \\\@subseries{} No. \@subseriesnumber
+      \fi}
+\\[3\baselineskip]
    {\Large\@titleenglish\\
      \@subtitleenglish}\\[5mm]
    \small
@@ -597,6 +614,7 @@
   \vfill
   \begin{flushleft}
     Keywords: \@keywords\\[3mm]
+    URL:    \texttt{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-\@divanumber}
   \end{flushleft}
   \includegraphics[width=35mm]{liu_primary_black_en} \\
     \@departmentenglish\\
@@ -689,12 +707,16 @@
       Dissertations,
       \else
       Licentiate Thesis
-      \fi No.  \@thesisnumber}\\[25mm]
+      \fi No.  \@thesisnumber
+      \ifsubseries
+      \\\@subseries{} No. \@subseriesnumber
+      \fi}
+\\[25mm]
      {\LARGE\bfseries\gettitle}\\[20mm]
      {\Large\bfseries\@author}\\
      \vfill
     \swedishenglish{\gdef\@langlogo{sv}}{\gdef\@langlogo{en}}
-    \includegraphics[width=85mm]{liu_primary_black_\@langlogo}
+    \includegraphics[width=60mm]{liu_primary_black_\@langlogo}
    \\[12mm]
      {\footnotesize
      \swedishenglish{%
