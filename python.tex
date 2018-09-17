@@ -35,19 +35,29 @@
 \label{cha:python}
 
 
+This chapter is based on the following paper:
+
+\begin{itemize}
+		
+	\item Bernt Lie, Sudeep Bajracharya, \textbf{Alachew Mengist}, Lena Buffoni, Arun Kumar, Martin Sj\"{o}lund, Adeel Asghar, Adrian Pop, Peter Fritzson.\textbf{ API for Accessing OpenModelica Models From Python.} In Proceedings of 9th EUROSIM Congress on Modeling and Simulation, September 12-16, 2016, Oulu, Finland. 
+	
+	\item Adeel Asghar, Andreas Pfeiffer, Arunkumar Palanisamy, \textbf{Alachew Mengist}, Martin Sj\"{o}lund, Adrian Pop and Peter Fritzson.\textbf{ Automatic Regression Testing of Simulation Models and Concept for Simulation of Connected FMUs in PySimulator.} In Proceedings of the 11th International Modelica Conference, Versailles, France, September 21-23, 2015. 
+		
+\end{itemize}
+
 \section{Introduction}
 \label{sec:pythonintroduction}
 
-EOO languages such as Modelica have relatively little support for advanced analysis of models and synthesis needed for control systems design, particularly for optimal control problems (OCPs). Examples of such desirable analysis capabilities could be (i) study of model sensitivity, (ii) random number generation and statistical analysis, (iii) Monte Carlo simulation, (iv) advanced plotting capabilities, (v) general optimization capabilities, (vi) linear analysis and control synthesis, etc. Scripting languages such as MATLAB and Python hold most of these desirable analysis capabilities, and it is of interest to integrate Modelica models with such script languages. For this purpose, we choose to work with Python and OpenModelica due to thier open source availabiliy.
+EOO languages such as Modelica have relatively little support for advanced analysis of models and synthesis needed for control systems design, particularly for optimal control problems (OCPs). Examples of such desirable analysis capabilities could be (i) study of model sensitivity, (ii) random number generation and statistical analysis, (iii) Monte Carlo simulation, (iv) advanced plotting capabilities, (v) general optimization capabilities, (vi) linear analysis and control synthesis, etc. Scripting languages such as MATLAB and Python hold most of these desirable analysis capabilities, and it is of interest to integrate Modelica models with such script languages. For this purpose, we choose to work with Python and OpenModelica due to their open-source availabiliy.
 
-A Python API*** for controlling Modelica simulation and analysis from Python was proposed in February 2015 ***. Based on this proposal, a first version of a Python API for operating on Modelica models in Python has been developed. Specifically, the discussion deals with how to generate a Python obejct from E00 modelica model, how to set operating conditions, and how to run the simulation to produce a result object. Furthermore, how to carry out linearization of a model object, the possibility of carrying out parameter sensitivity studies, and how to extract results from the result object to Python.  The proposed solution has been tested on several industrial relevant models and how it can be used for automatic analysis of Modelica models from Python is illustrated, exemplified by a simple water tank model.
+A Python API for controlling Modelica simulation and analysis from Python was proposed in February 2015 \footnote{Python API for Accessing OpenModelica Models, by B. Lie, February 20, 2015.}. Based on this proposal, we have developed a first version of a Python API for operating on Modelica models in Python has been developed. In this chapter, we present how to generate a Python obejct from EOO modelica model, how to set operating conditions, and how to run the simulation to produce a result object are illustrated . Furthermore, how to carry out linearization of a model object, the possibility of carrying out parameter sensitivity studies, and how to extract results from the result object to Python are described. The proposed solution has been tested on several industrial relevant models and how it can be used for automatic analysis of Modelica models from Python is illustrated, exemplified by a simple water tank model.
 
 \section{Description of the API}
 \label{sec:pythonapi}
 
 The API is described in the subsections below.
 
-\subsection{Pyhton Class and Constructor}
+\subsection{Python Class and Constructor}
 \label{subsec:pythonclass}
 
 The name of the Python class which is used for operation on Modelica models, is \textit{ModelicaSystem}.
@@ -72,9 +82,7 @@ argument.
 	\item A \textit{third input argument} is used if the Modelica model builds on other Modelica code, e.g. the Modelica Standard Library.
 \end{itemize}
 
-Example 1: Use of constructor.
-
-Suppose we have a Modelica model with name CSTR wrapped in a Modelica package \textit{Reactors} — stored in file
+Example 1: Use of constructor.Suppose we have a Modelica model with name CSTR wrapped in a Modelica package \textit{Reactors} — stored in file
 \textit{Reactor.mo}:
 
 \begin{lstlisting}
@@ -94,20 +102,14 @@ Python code instantiates a Python object \textit{mod}:
 >>> mod = ModelicaSystem('Reactors.mo','Reactors.CSTR')
 \end{lstlisting}
 
-The user is free to choose any valid Python label name for the Python object.
-
-All methods of class \textit{ModelicaSystem} refers to the instantiated object, in standard Python fashion. Thus, method
-\textit{simulate()} is invoked with the Python command:
+The user is free to choose any valid Python label name for the Python object. All methods of class \textit{ModelicaSystem} refers to the instantiated object, in standard Python fashion. Thus, method \textit{simulate()} is invoked with the Python command:
 
 \begin{lstlisting}
 >>>mod.simulate()
 \end{lstlisting}
 
 In the subsequent overview of methods, the object name is not included. In practice, of course, it must be included in order
-to operate on the object in question.
-
-Methods may have no input arguments, one, or several input arguments. Methods may or may not return results — if the methods 
-do not return results, the results are stored within the object.
+to operate on the object in question. Methods may have no input arguments, one, or several input arguments. Methods may or may not return results — if the methods do not return results, the results are stored within the object.
 
 \subsection{Utility routines, converting Modelica $\leftrightarrow$ FMU:}
 \label{subsec:pythonmodelicafmu}
@@ -201,7 +203,7 @@ file extension \textit{.fmu}.
 \section{Case Study: Python API usage for Model Analysis}
 \label{subsec:pythoncasestudy}
 
-We consider the simple tank in Figure \ref{pythonwatertankmodel} filled with water. Water with initial mass $m(0)$ is emptied by gravity
+We consider the simple tank in Figure \ref{fig:pythonwatertankmodel} filled with water. Water with initial mass $m(0)$ is emptied by gravity
 through a hole in the bottom at effluent mass flow rate $\dot{m}_e$, while at the same time water is filled into the tank at influent mass flow rate $\dot{m}_i$.
 
 \begin{figure}
@@ -211,8 +213,7 @@ through a hole in the bottom at effluent mass flow rate $\dot{m}_e$, while at th
 \end{figure}
 
 Our modeling objective is to find the liquid level h.This objective is illustrated by the functional diagram in
-Figure \ref{pythonwatertankfunctional}. The functional diagram depicts the causality of the system (“Tank with influent and effluent mass flow”),where inputs (green arrow) cause a change in the system and is observed at outputs (orange arrow)\footnote{Although Modelica is an acausal modeling language, it is useful to think in terms of causality during model development.}. Here, the input variable is the influent mass flow rate $\dot{m}_i$, while the
-output variable is the quantity we are interested in, $h$.
+Figure \ref{fig:pythonwatertankfunctional}. The functional diagram depicts the causality of the system (“Tank with influent and effluent mass flow”),where inputs (green arrow) cause a change in the system and is observed at outputs (orange arrow)\footnote{Although Modelica is an acausal modeling language, it is useful to think in terms of causality during model development.}. Here, the input variable is the influent mass flow rate $\dot{m}_i$, while the output variable is the quantity we are interested in, $h$.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{python_water_tank_functional.png}
@@ -327,7 +328,7 @@ their values must be given in an external model/code — we will specify this in
 given — $h$.
 
 In the second section of model \textit{ModWaterTank}, the Model equations exactly map the mathematical model
-given in Section III-B [****]. For illustrative purposes, the core model \textit{ModWaterTank} is wrapped within a package named
+given in Section \ref{subsec:pythonmodelsummary}. For illustrative purposes, the core model \textit{ModWaterTank} is wrapped within a package named
 \textit{WaterTank} and stored in file \textit{WaterTank.mo},
 
 
@@ -374,14 +375,13 @@ notebook. Finally, label \textit{LW} is used to give a conform line width in plo
 \subsection{Basic Simulation of Model}
 \label{subsec:pythonsimulatemodel}
 
-We instantiate object \textit{tank} with the following command:
+We instantiate object \textit{tank} by running \acrshort{omc} Server up with the following command:
 
 \begin{lstlisting}
 	tank = ModelicaSystem('WaterTank.mo','WaterTank.ModWaterTank')
 \end{lstlisting}
 
-whereupon Python/Jupyter notebook responds that the \cite{omc} Server is up and running the file. Next, we are
-interested in which \textit{quantities} are available in the model.In the sequel, Python prompt \textit{>>>} is used when Jupyter
+Next, we are interested in which \textit{quantities} are available in the model.Python prompt \textit{>>>} is used when Jupyter
 notebook actually uses \textit{In[*]} — where \textit{*} is some number, while the response in Jupyter notebook is prepended
 with \textit{Out[*]}.
 
@@ -401,7 +401,7 @@ with \textit{Out[*]}.
 \end{lstlisting}
 
 The last command leads Jupyter notebook to typeset a tabular presentation of the quantities, Figure \ref{fig:pythontypesetting}  The results
-in Figure \ref{fig:pythontypesetting} should be compared to the Modelica model in Section III-C [****]. Observe that Modelica \textit{constants} are not included in the quantity list.
+in Figure \ref{fig:pythontypesetting} should be compared to the Modelica model in \ref{subsec:pythonmodleicamodel}. Observe that Modelica \textit{constants} are not included in the quantity list.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{python_typesetting.png}
@@ -470,13 +470,15 @@ The result is displayed in Figure \ref{fig:pythonwatertanklevelplot}.
 	\caption{Tank level when starting from steady state, and $\dot{m}_i(t)$ varies in a straight line between the points $(tj,\dot{m}_i(t_j ))$
 		given by the list $[(0; 3); (2; 3); (2; 4); (6; 4); (6; 2); (10; 2)]$.}
 	\label{fig:pythonwatertanklevelplot}
+	\includegraphics[width=\linewidth]{python_water_tank_level_sensitivity_plot.png}
+	\caption{Uncertainty in tank level with a 5\% uncertainty in valveconstant $K$. The input the same as in Figure \ref{fig:pythonwatertanklevelplot}}
+	\label{fig:pythonwatertanklevelsensitivityplot}
 \end{figure}
 
 \subsection{Parameter Sensitivity/Monte Carlo Simulation}
 \label{subsec:pythonparametersensitivity}
 
-It is of interest to study how the model behavior varies
-with varying uncertain parameter values, e.g. the effluent
+It is of interest to study how the model behavior varies with varying uncertain parameter values, e.g. the effluent
 valve constant $K$. This can be done as follows:
 
 \begin{lstlisting}
@@ -498,43 +500,14 @@ valve constant $K$. This can be done as follows:
 	>>> plt.legend()
 \end{lstlisting}
 
-
 The result is as shown in Figure \ref{fig:pythonwatertanklevelsensitivityplot}.
 
-\begin{figure}
-	\includegraphics[width=\linewidth]{python_water_tank_level_sensitivity_plot.png}
-	\caption{Uncertainty in tank level with a 5\% uncertainty in valveconstant $K$. The input the same as in Figure \ref{fig:pythonwatertanklevelplot}}
-	\label{fig:pythonwatertanklevelsensitivityplot}
-\end{figure}
-
-\section{Simulator Plugin for Wolfram SystemModeler in PySimulator}
+\section{Integration of Wolfram SystemModeler Simulator in PySimulator}
 \label{sec:pythonwolframplugin}
 
 PySimulator supports simulation of models in FMU form or using different Modelica tools via extension
-plugins. From previous work simulator plugins for tools such as Dymola, SimulationX, and
-OpenModelica (Ganeson et al, 2012) are available. This section presents a new simulator plugin developed
-for Wolfram SystemModeler.
-
-Wolfram SystemModeler has its own symbolic mathematical computation program, Mathematica \cite{mathematica} which can be used
-to perform actions via the Wolfram SystemModeler link (WSMLink)\cite{wsmlink} API such as loading, compilation and 
-simulation of models or plotting of results. WSMLink provides functionality 
-for integrating Wolfram SystemModeler and Mathematica  with complete access to models and simulations.
-
-Wolfram SystemModeler can be interfaced to other tools via MathLink\cite{mathlink} which is a library of functions that 
-implement a protocol for sending and receiving Mathematica expressions. MathLink\cite{mathlinktutorial,mathlink} allows external
-programs both to call Mathematica, and to be called by Mathematica . It is possible to create a front end that 
-implements your own user interface , and communicates with the Mathematica kernel via MathLink \cite{mathlinkc}.
-
-Using the existing plugin interface for simulator plugins in PySimulator a new simulator plugin has
-been implemented: the Wolfram plugin. It enables PySimulator to load and numerically simulate
-Modelica models using Wolfram SystemModeler (Wolfram SystemModeler, 2015).
-
-The Wolfram plugin is integrated into PySimulator via MathLink (Wolfram SystemModeler, 2015) and
-Pythonica \cite{pythonica}, which connects to Mathematica (Wolfram Mathematica, 2015) and
-SystemModeler. We used the Wolfram SystemModeler API to support loading a Modelica model, simulating
-it, and reading the simulation setting file (\textit{.sim}) which is an XML file to build the variable tree in the
-variables browser of PySimulator. The overall communication setup with SystemModeler is given in
-Figure \ref{fig:pythonwolframcommunication}.
+plugins. From previous work simulator plugins for tools such as Dymola, SimulationX, and OpenModelica are available. 
+This section presents a new simulator plugin developed for Wolfram SystemModeler.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{python_wolfram_communication.png}
@@ -542,14 +515,30 @@ Figure \ref{fig:pythonwolframcommunication}.
 	\label{fig:pythonwolframcommunication}
 \end{figure}
 
-All the simulator plugins of PySimulator are controlled by the same Integrator Control GUI. The Wolfram
-SystemModeler simulator supports five different numerical integration methods (DASSL, CVODES,
-Euler, RungeKutta, and Heun), all the simulation menu options are supported (error tolerance, fixed step
-size, etc.) see Figure \ref{fig:pythonintegratorcontrol}.
+Wolfram SystemModeler has its own symbolic mathematical computation program, Mathematica \cite{mathematica}, which can be used
+to perform actions via the Wolfram SystemModeler link (WSMLink) API \cite{wsmlink} such as loading, compilation and 
+simulation of models or plotting of results. WSMLink provides functionality for integrating Wolfram SystemModeler and Mathematica  
+with complete access to models and simulations.
 
-The start and stop time for the integration algorithm can be changed and one of the integration algorithms
-can be selected. Depending on the integration algorithms the user can change the error tolerance or
-the fixed step size before running the simulation.
+Wolfram SystemModeler can be interfaced to other tools via MathLink \cite{mathlink} which is a library of functions that 
+implement a protocol for sending and receiving Mathematica expressions. MathLink \cite{mathlinktutorial,mathlink} allows external
+programs both to call Mathematica, and to be called by Mathematica . It is possible to create a front end that 
+implements your own user interface , and communicates with the Mathematica kernel via MathLink \cite{mathlinkc}.
+
+Using the existing plugin interface for simulator plugins in PySimulator a new simulator plugin has
+been implemented: the Wolfram plugin. It enables PySimulator to load and numerically simulate
+Modelica models using Wolfram SystemModeler.
+
+The Wolfram plugin is integrated into PySimulator via MathLink and Pythonica \cite{pythonica}, which connects to Mathematica and
+SystemModeler. We used the Wolfram SystemModeler API to support loading a Modelica model, simulating
+it, and reading the simulation setting file (\textit{.sim}) which is an XML file to build the variable tree in the
+variables browser of PySimulator. The overall communication setup with SystemModeler is given in
+Figure \ref{fig:pythonwolframcommunication}.
+
+All the simulator plugins of PySimulator are controlled by the same Integrator Control GUI. The Wolfram
+SystemModeler simulator supports five different numerical integration methods (\textit{DASSL, CVODES,
+Euler, RungeKutta, and Heun}), all the simulation menu options are supported (\textit{error tolerance, fixed step
+size}, etc.) see Figure \ref{fig:pythonintegratorcontrol}.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{python_integrator_control.png}
@@ -557,16 +546,35 @@ the fixed step size before running the simulation.
 	\label{fig:pythonintegratorcontrol}
 \end{figure}
 
+The \textit{start} and \textit{stop time} for the integration algorithm can be changed and one of the integration algorithms
+can be selected. Depending on the integration algorithms the user can change the \textit{error tolerance} or the \textit{fixed step size}
+before running the simulation.
 
-It is also possible to simulate the list of models using the Wolfram plugin, see Figure 9 in Section 4. The
-existing PySimulator interface automatically includes the new plugin to the simulators list for simulating a
-list of models, see also Section 4.1.
+It is also possible to simulate the list of models using the Wolfram plugin. The existing PySimulator interface automatically 
+includes the new plugin to the simulators list for simulating a list of models.
 
+\begin{landscape}
 \begin{figure}
 	\includegraphics[width=\linewidth]{python_list_of_simulate_models.png}
 	\caption{List of simulate models via Wolfram plugin.}
 	\label{fig:pythonlistofsimulatemodels}
 \end{figure}
+\end{landscape}
+
+\section{Summary}
+\label{sec:pythonsummary}
+
+In this chapter, we have introduced an enhanced Python interface for interacting with FMUs and Modelica models for further analysis and post processing of simulation results. We have presented how a modeler can use the Python interface to simulate and access Modelica models using Python objects. The idea behind the developed interface is to provide the modeler with the ability to manipulate and exchange data with Modelica models before and after simulations. A case study of a Modelica model is presented to illustrate the tool’s usage.
+
+We have also presented a simulator plugin for commercial simulation engine for Modelica models - the Wolfram SystemModeler within PySimulator. The existing PySimulator interface automatically includes the new plugin to the simulators list for simulating list of models. We have successfully tested by loading all the result files generated from wolfram plugin and verified the results by comparing with several other base line tools. The integration of Wolfram SystemModeler simulator plugin use the regression analysis framework within PySimulator to compare results of the same model generated from SystemModeler with several other tools or different versions of the same model from SystemModeler tool.
+
+\subsection*{Acknowledgments}
+\label{sec:pythonacknowledgments}
+
+Part of the PySimulator work is financed by the CleanSky Joint Undertaking project PyModSimA (JTI-CS-2013-2-
+SGO-02-064). This support is highly appreciated. The authors thank Jakub Tobolar (DLR
+Institute of System Dynamics and Control) for his tests and support of the regression testing feature in an
+earlier stage and his implementation of the automatic generation of the simulation setup file by Dymola.
 
 %\nocite{scigen}
 %We have included Paper \ref{art:scigen}

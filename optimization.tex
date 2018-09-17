@@ -31,23 +31,34 @@
 %%% Code:
 
 
-\chapter{Integration of Optimization toolchain into the Model-Based Development Process}
+\chapter{Integration of Optimization tool-chain into the Model-Based Development Process}
 \label{cha:optimization}
+
+This chapter is based on the following paper:
+
+\begin{itemize}
+	
+	\item \textbf{Alachew Shitahun}, Vitalij Ruge, Mahder Gebremedhin, Bernhard Bachmann, Lars Eriksson, Joel Andersson, Moritz Diehl, and Peter Fritzson. \textbf{Model-Based Optimization with OpenModelica and CasADi.} In Proceedings of IFAC Conference in Tokyo, September 2013. 
+	
+	\item  \textbf{Alachew Shitahun}, Vitalij Ruge, Mahder Gebremedhin, Bernhard Bachmann, Lars Eriksson, Joel Andersson, Moritz Diehl, Peter Fritzson. \textbf{Tool Demonstration Abstract: OpenModelica and CasADi for Model-Based Dynamic Optimization.} In Proceedings of the 5th International Workshop on Equation-Based Object-Oriented Modeling Languages and Tools, Nottingham, UK, April 19, 2013. 
+		
+\end{itemize}
+
 
 
 \section{Introduction}
 \label{sec:optimizationintroduction}
 
-Equation-based, object-oriented modelling languages such as Modelica  have become increasingly used for
-industrial applications. These languages enable users to conveniently model large-scale physical systems described by 
-differential, algebraic, and discrete equations, primarily with the goal of performing virtual experiments (simulation) 
-on these systems, but recently also optimization.
-
-During the last decade, nonlinear model predictive control (NMPC) and nonlinear optimal control problems (NOCP)
-based on differential-algebraic equations (DAE) have had a significant impact in the industrial community, particularly in
+During the last decade, nonlinear model predictive control (NMPC) and non-linear optimal control problems (NOCP)
+based on Differential-Algebraic Equations (DAEs) have had a significant impact in the industrial community, particularly in
 the control engineering area \cite{biegler, tamimi}. State-of-the-art methods are using numerical
 algorithms for dynamic optimization based on direct multiple shooting \cite{bock} or collocation algorithms
 \cite{biegler}.
+
+Equation-based, object-oriented modeling languages such as Modelica  have become increasingly used for
+industrial applications. These languages enable users to conveniently model large-scale physical systems described by 
+differential, algebraic, and discrete equations, primarily with the goal of performing virtual experiments (simulation) 
+on these systems, but recently also optimization.
 
 Due to the influence of such equation-based, object-oriented modeling languages in the industrial community, there have
 been several attempts to integrate tools for such languages with numerical algorithms for optimization. For example,
@@ -58,72 +69,13 @@ control.
 This chapter presents results of an effort where model-based dynamic optimization has been done by integrating
 OpenModelica and CasADi \cite{casadi}. The problem formulation and modeling is done in Modelica 
 (Modelica Association, 2010) including the optimization \cite{optimica} language extension. The integration is based
-on standardized XML format presented in \cite{xml} for exchange of differential-algebraic equations (DAE)  models. 
+on standardized XML format presented in \cite{xml} for exchange of \acrshort{daes}  models. 
 OpenModelica supports export of models written in Modelica and the optimization language extension using this XML 
 format, while CasADi supports import of models represented in this format. This allows users to define optimal control problems (OCP) using
 Modelica and optimization language specification, and solve the underlying model formulation using a
 range of optimization methods, including direct collocation and direct multiple shooting. The proposed
 solution has been tested on several industrially relevant optimal control problems, including a dieselelectric
 power train.
-
-\section{Nonlinear Optimal Control Problems (NOCP)}
-\label{sec:optimizationnocp}
-
-Model-based optimization results in nonlinear optimal control problems of the form \cite{friesz}:
-
-\begin{equation} \label{eq:1}
-    \text{min}\; M \Big(x(t_f )\Big)+\int_{(t_0)}^{(t_f)}\; L(x(t),u(t),t) dt 
-\end{equation}
-
-subject to
-
-\begin{equation} \label{eq:2}
-	 r_0\Big(x(t_0),\dot{x}(t_0)\Big) = 0 
-\end{equation}
-\begin{equation}\label{eq:3}
-	 0 = fx(t),\dot{x}(t),u(t),t\Big)
-\end{equation}
-\begin{equation}\label{eq:4}
-	0 \leq g\Big(x(t),x(t),u(t),t\Big)
-\end{equation}
-\begin{equation}\label{eq:5}
-	r_f\Big(x(t_f),\dot{x}(t_f)\Big)
-\end{equation}
-
-where $ t \in [t_0,t_f ] $ is the time, $ x(t) \in {\mathbb{R}}^ {n_x} $ are state variables and  $ u(t) \in {\mathbb{R}}^ {n_u}$ are control variables. Initial and terminal equations are \ref{eq:2} and \ref{eq:5}, respectively. Equation \ref{eq:4} represents path constrains and. Equation \ref{eq:3} is the nonlinear dynamic model description given as a differential-algebraic equation (DAE). The objective function \ref{eq:1} is composed of an end cost (Mayer term) and an integral cost (Lagrange term).
-
-\section{Numerical handling}
-\label{sec:numericalhandling}
-
-For the numerical solution, the time horizon,$ [t_0,t_f] $, will be divided into a finite number of intervals $[t_0,t_1 ],…,[t_{n-1},t_n ]$, e.g. equidistant partitioning:
-
-\begin{equation*}
-	t_i\quad:=\quad t_0+h.i,i=0,...,n,h:= \frac{t_f-t_0}{n} 
-\end{equation*}
-
-A good approximation for the Lagrange term in a subinterval $[t_i,t_{i+1}]$ is given by Gaussian quadrature. For that, intermediate points $x(t_i+s_k.h)$ with $s_k\in [0,1]$ and respective weights $ w_k $ are needed. This requirement naturally induces for the discretization of \ref{eq:3} so-called collocation methods. There are special classes related to implicit Runge-Kutta methods \cite{deuflhard}. In order to achieve continuous solutions with minimal expenditure it is requested that the endpoints are included in the collocation scheme \cite{bernhard}). Therefore, the Radau IIA or Lobatto IIIA formulas can be used \cite{hermann}. The main differences between the two methods are that the Radau IIA has a higher stability. On the other hand, Lobatto IIIA includes the start point and it is possible to accomplish differentiable solutions. This is important if initial equations also have constraints on the derivatives.
-
-\section{Total Collocations}
-\label{sec:totalcollocations}
-
-Applying implicit Runge-Kutta methods for local approximation of equation \ref{eq:3} leads to a system of nonlinear equations for each subinterval. The exact solution of each nonlinear equation system can be spared by adding these to the over-all nonlinear problem \cite{biegler} which leads to the total collocation method. The finite dimensional optimization problem is finally described by the nonlinear programming problem (NLP):
-
-\begin{equation}\label{eq:6}
-   \text{min} \; M\quad(x_{m,n}) + h\quad.\quad \sum_{j=0}^{m} w_j\quad .\quad\sum_{i=0}^{n} L(x_{j,i},u_{j,i}, t_{j,i} )
-\end{equation}
-
-subject to
-
-\begin{equation}\label{eq:7}
-	\begin{aligned}
-		r_0(x_{0,0}) = 0 \\
-		res(x_{k,i}, u_{k,i}, t_{k,i} ) = 0 \\
-		g(x_{k,i}, u_{k,i}, t_{k,i} ) \geq 0 \\
-		r_f(x_{m,n} = 0
-	\end{aligned}
-\end{equation}
-
-where $ t_{k,i} = t_i+s_k.h $ are time points for the collocation residuals, $ x_{k,i} \approx x(t_{k,i}) $ are the approximation which are implicit given by the fulfilment of the conditions and $ u_{k,i}= u(t_{k,i}) $  for $ k=1,..m $ and $ i=0,..m.$ For the case $t_f$ is free then the optimization problem will be harder and the initial guess will be more important. $ res(x_{k,i},u_{k,i},t_{k,i} )$ are collocation residuals. More detailed descriptions are in \cite{bernhard}. Note, equation \ref{eq:3} is usually given in implicit form. For efficiency reason it is quite important to use the symbolic pre-processing already available within the tool chain to transform equation \ref{eq:3} to semi-explicit DAE of index 1. This procedure will reduce the solution space dramatically and might be a prerequisite for finding a solution to the non-linear problem \ref{eq:7}.
 
 \section{CasADi}
 \label{sec:optcasadi}
@@ -134,8 +86,8 @@ The tool supports symbolic import of OCPs via an extended version of the functio
 \section{Modelica and the Optimization Language Extension}
 \label{sec:optimizationoptimica}
 
-Modelica is a mature and powerful language regarding modelling of complex hybrid dynamical systems. However, it
-lacks important features for describing or modelling optimization problems. This is not a surprise since Modelica
+Modelica is a mature and powerful language regarding modeling of complex hybrid dynamical systems. However, it
+lacks important features for describing or modeling optimization problems. This is not a surprise since Modelica
 was not originally designed to help with dynamic optimization problems.
 
 The optimization language extension \cite{optimica} complements Modelica by providing features which enable
@@ -145,7 +97,7 @@ consists of the following elements:
 \begin{itemize}
 	
 \item \textit{objective} and \textit{objectiveIntegerand}, which maps the Mayer and the Lagrange term in 
-             the objective function \ref{eq:1} respectively.
+             the objective function respectively.
 \item \textit{startTime}, which defines the start of the optimization interval.
 \item \textit{finalTime}, which defines the end of the optimization interval.
 \item A new section: \textit{constraint}, which defines inequality constraints.
@@ -153,18 +105,25 @@ consists of the following elements:
 
 The requirement and motivation for introducing these specific features is covered in more detail in \cite{optimica}.
 
-\section{OpenModelica Compiler and XML Export}
+\section{Modeling NOCP and XML Export in OpenModelica Compiler}
 \label{sec:optimizationopenmodelica}
 
 The OpenModelica compiler front-end has been extended to support the optimization language extension described in
-section 4. This enable users to formulate and use modelbased NOCP that can be solved by CasADi, In addition, the
-OpenModelica compiler has recently been extended with XML export of models \cite{alachew} based on the XML
+Section \ref{sec:optimizationoptimica}. This enable users to formulate and use model-based NOCP using the OpenModelica graphical editor (OMEdit) (see Figure \ref{fig:nocpmodel}) that can be solved by CasADi.
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{opt_modeling_NOCP.png}
+	\caption{Modeling NOCP using the OpenModelica Graphical and Textual Editor.}
+	\label{fig:nocpmodel}
+\end{figure}
+
+In addition, the OpenModelica compiler has recently been extended with XML export of models \cite{alachew} based on the XML
 format defined in \cite{xml}. This schema is an extended version of the XML schema
-defined by the Functional Mock-up Interface (FMI) (Modelisar, 2010), and is the most recent in a series of
+defined by the Functional Mock-up Interface (FMI) \cite{fmi}, and is the most recent in a series of
 Modelica-related XML schemas starting with ModelicaXML \cite{pop}.The XML export also includes the
 optimization language extension, and OpenModelica is integrated with CasADi for model-based dynamic optimization reported in this thesis.
 
-\section{Complete Tool Chain}
+\section{Complete Model-Based Dynamic Optimization tool-chain}
 \label{sec:optimizationtoolchain}
 
 Before exporting a Modelica and optimization language model to XML, the model should be symbolically
@@ -176,23 +135,23 @@ visualized in Figure \ref{fig:optimizationtoolchain}.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{opt_tool_chain.png}
-	\caption{Optimization tool chain for OpenModelica and CasADi.}
+	\caption{Model-Based Dynamic Optimization tool-chain for OpenModelica and CasADi.}
 	\label{fig:optimizationtoolchain}
 \end{figure}
 
-The XML will be imported and symbolically pre-processed in CasADi. In particular, the fully-implicit DAE from
+The XML will be imported and symbolically pre-processed in CasADi. In particular, the fully-implicit \acrshort{dae} from
 Modelica is reformulated in a semi-explicit form. With the NOCP now available in CasADi’s native data structures, the
 NOCP can be reformulated to a NLP as outlined in Section \ref{sec:totalcollocations}.
 
 At the time of writing, the efficient symbolic pre-processing model evaluation from OpenModelica is not yet completely
-implemented to import into CasADi. So the symbolic preprocessing in CasADi can be used. The symbolic work in CasADi makes it easy to create the goal function \ref{eq:6} and constraints \ref{eq:7}.
+implemented to import into CasADi. So the symbolic preprocessing in CasADi can be used. The symbolic work in CasADi makes it easy to create the goal function and constraints.
 
 The NLP is solved by one of the NLP solvers interfaced to CasADi, e.g. IPOPT \cite{wachter}. First and second order derivative information will be generated by CasADi using automatic differentiation and passed to the solver.
 
-\section{Testing the Implementation}
+\section{Testing the Tool-chain Implementation}
 \label{sec:optimizationtesting}
 
-In this chapter, we describe the solution of an industrial-relevant optimal control problem of the diesel electric powertrain. The
+In this section, we describe the solution of an industrial-relevant optimal control problem of the diesel electric powertrain. The
 formulation of the underlying optimization problem and the corresponding optimization results are presented in the
 following subsections.
 
@@ -269,7 +228,7 @@ cost function. This OCP is then exported into an XML-based
 symbolic expression format and imported into CasADi via
 OpenModelica. The OCP can then be transcribed into a
 nonlinear programming problem (NLP) using the approach
-outlined in Section \ref{sec:totalcollocations}.
+outlined in \cite{bernhard} of Section 5, and solved with one of CasADi’s interfaced NLP solvers.
 
 \subsection{Solution of the NLP}
 \label{sec:optimizationnlp}
@@ -348,12 +307,17 @@ Amendments to the initial values, the process is robust. For this purpose, the i
 	\label{fig:optimizationresultchangedcontrolvariables}
 \end{figure}
 
+\section{Summary}
+\label{sec:optimizationsummary}
+
+In this chapater, the integration of CasADi and OpenModelica for model-based dynamic optimization based on an XML format for exchange of DAE models has been reported.  OpenModelica supports export of models in this XML format, wheras CasADi supports import of models expressed in this format. In order to present the proposed solution, we have demonstrated the solution of an industrial-relevant optimal control problem of diesel engine model. OpenModelica coupling with CasADi has shown the possibility to use an XML-based model exchange format for model-based dynamic optimization with state of the art optimization algorithms.  
+
 \subsection*{Acknowledgements}
 \label{sec:optimizationacknowledgements}
 
 This work has been partially supported by Serc, by SSF in the EDOp project and by Vinnova as well as the German
 Ministry BMBF (BMBF F\"{o}rderkennzeichen: 01IS09029C) in the ITEA2 OPENPROD project and in the ITEA2 MODRIO
-project. The Open Source Modelica Consortium supports the OpenModelica work.
+project. The open-source Modelica Consortium supports the OpenModelica work.
 JA and MD acknowledge support by PFV/10/002 OPTEC, GOA/10/09 and GOA/10/11, FWO G.0320.08, G.0377.09,
 SBO LeCoPro; Belspo IUAP P7 DYSCO, FP7-EMBOCON (ICT-248940), SADCO (MC ITN-264735),
 ERC ST HIGHWIND (259 166), Eurostars SMART, vicerp, ACCM.

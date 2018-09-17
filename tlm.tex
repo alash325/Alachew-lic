@@ -31,37 +31,43 @@
 %%% Code:
 
 
-\chapter{TLM-Based Co-Modeling Simulation Framework}
+\chapter{TLM-Based Co-Modeling Editor and Co-Simulation Framework}
 \label{cha:tlm}
 
+
+This chapter is based on the following paper:
+
+\begin{itemize}
+	
+	
+	\item  \textbf{Alachew Mengist}, Adeel Asghar, Adrian Pop, Peter Fritzson, Willi Braun, Alexander Siemers and Dag Fritzson.\textbf{ An Open-Source Graphical Composite Modeling Editor and Simulation Tool Based on FMI and TLM Co-Simulation.} In Proceedings of the 11th International Modelica Conference, Versailles, France, September 21-23, 2015. 
+	
+\end{itemize}
 
 \section{Introduction}
 \label{sec:tlmintroduction}
 
 Industrial products often consist of many components which have been developed by different suppliers
-using different modeling and simulation tools.Modeling and simulation support is needed in order to
-integrate all the parts of a complex product model.
-TLM based modeling and co-simulation is an important technique for modeling, connecting, and simulation of
-especially mechanical systems, which is simple,numerically stable, and efficient. A number of tool specific
-simulation models, such as Modelica models, SimuLink models, Adams models, BEAST models, etc., have successfully been connected
-and simulated using TLM based co-simulation.
+using different modeling and simulation tools. An integrated modeling and simulation support is needed in order to
+integrate all the parts of a complex product model. TLM-based modeling and co-simulation is an important technique for
+modeling, connecting, and simulation of especially mechanical systems, which is simple, numerically stable, and efficient.
+A number of tool specific simulation models, such as Modelica models, SimuLink models, Adams models, BEAST models, etc., 
+have successfully been connected and simulated using TLM-based co-simulation.
 
 This has successfully been demonstrated by integrating and connecting several different simulation
 models, especially for mechanical applications. Such an integrated model consisting of several model parts
 is here called a composite model since it is composed of several sub-models. Another name used for such a
-model is meta-model, since it is a model of models. In earlier work (Siemers et al, 2005), (Siemers and
-Fritzson, 2006) Modelica (Fritzson, 2014) with its object oriented modeling capabilities and its
-standardized graphical notations has demonstrated the possibilities for meta-modeling/composite modeling of
+model is meta-model, since it is a model of models. In earlier work \cite{tlmalexander05,tlmsiemers06}, Modelica with its object oriented modeling capabilities and its standardized graphical notations has demonstrated the possibilities for meta-modeling/composite modeling of
 mechanical systems using TLM.
 
-The availability of a general XML-based composite modeling language (Siemers et al, 2005) is an
-important aspect of our FMI and TLM based modeling and co-simulation framework. However, modelers
+The availability of a general XML-based composite modeling language \cite{tlmalexander05} is an
+important aspect of our TLM-based modeling and co-simulation framework. However, modelers
 developing composite models are likely to take advantage of the additional availability of tools that
 assist them with respect to the composite modeling process (i.e., the process of creating and/or editing a
 composite model, here represented and stored as XML). 
 
 We introduce a graphical composite model editor which is an extension and specialization of the
-OpenModelica connection editor OMEdit (Asghar et al, 2010). In the context of this work a composite
+OpenModelica connection editor OMEdit. In the context of this work a composite
 model is composed of several sub-models including the interconnections between these sub-models. 
 The editor supports creating, viewing and editing a composite model both in textual and graphical representation. 
 The system supports simulation of composite models consisting of sub-models created using different tools.. It is also integrated
@@ -70,8 +76,8 @@ with the SKF TLM-based cosimulation framework.
 \section{TLM-Based Co-simulation Framework}
 \label{sec:tlmframework}
 
-As men\-tioned, a gen\-eral frame\-work for com\-pos\-ite model based co-simulation has pre\-vi\-ously 
-been de\-signed and im\-ple\-mented  \cite{tlmalexander05}. The design goals for the simulation part of that framework
+As men\-tioned, a gen\-eral frame\-work for com\-pos\-ite model-based co-simulation has pre\-vi\-ously 
+been de\-signed and im\-ple\-mented in  \cite{tlmalexander05}. The design goals for the simulation part of that framework
 were portability, simplicity to incorporate additional simulation tools, and computational efficiency. 
 It is also the framework used for \acrshort{tlm}-based composite model co-simulation described in this chapter.
 The TLM composite model co-simulation is primarily handled by the central simulation engine of the framework 
@@ -91,7 +97,7 @@ simulation monitor via TCP/IP. The simulation monitor receives the data and writ
 \label{sec:tlmschema}
 
 The composite model \acrshort{xml}-Schema for validating the co-simulation composite model is designed according
-to its specification described in (Siemers et al, 2005).The following is a sample composite model \acrshort{xml} representation:
+to its specification described in \cite{tlmalexander05}.The following is a sample composite model \acrshort{xml} representation:
 
 
 
@@ -133,9 +139,7 @@ a connection between two TLM interfaces. Its attributes \textit{From} and \texti
 \label{sec:tlmeditor}
 
 One of the primary contributions of this effort is our focus on interoperability in modeling and simulation.
-Our effort leverage OpenModelica for graphical composite model editing as well as SKF’s co-simulation framework for TLM Based co simulation. As mentioned, the implementation of this graphical
-composite model editor is an extension of OMEdit (Asghar et al, 2010) which is implemented in C++
-using the Qt graphical user interface library.
+Our effort leverage OpenModelica for graphical composite model editing as well as SKF’s co-simulation framework for TLM-based co-simulation. The implementation of this graphical composite model editor is an extension of OMEdit  which is implemented in C++ using the Qt graphical user interface library.
 
 The full graphical functionality of the composite modeling process can be expressed in the following steps:
 
@@ -160,24 +164,23 @@ The graphical composite model editor communicates with the OpenModelica compiler
 retrieve the interface points for the external model and SKF’s co-simulation framework to run the \acrshort{tlm} simulation manager and simulation monitor. Each tool component is descried in the following subsections.
 
 In the graphic composite model editor the modeling page area is used for visual composite modeling or text
-composite modeling. This allows users to create, modify, and delete sub-models. A screenshot of the
-modeling page area is shown in Figure 5 [***]. 
+composite modeling. This allows users to create, modify, and delete sub-models user-friendly. 
 
 \subsection{Visual Modeling}
 \label{sec:tlmvisual}
 
-Each composite model has two views: a Text view and a Diagram view. In the Diagram view, each simulation
-model component (sub-model) of the \acrshort{tlm} cosimulation can be dragged and dropped from the library browser to this view, and then the sub-model will be automatically translated into a textual form by
-fetching the interface name for the \acrshort{tlm} based cosimulation.The user can complete the composite
-model (see Figure \ref{fig:tlmgraphicalview}) by graphically connecting components (sub-models).
+Each composite model has two views: a Text view and a Diagram view. In the diagram view, each simulation
+model component (sub-model) of the \acrshort{tlm} cosimulation can be dragged and dropped from the library browser to this view, and then the sub-model will be automatically translated into a textual form by fetching the interface name for the \acrshort{tlm} based cosimulation. The user can complete the composite model (see Figure \ref{fig:tlmtest}) by graphically connecting components (sub-models).
 
+\begin{landscape}
 \begin{figure}
 	\includegraphics[width=\linewidth]{test_tlm.png}
 	\caption{A screenshot of visual composite modeling of double pendulum.}
 	\label{fig:tlmtest}
 \end{figure}
+\end{landscape}
 
-The test model (see Figure [***] ) is a multibody system that consists of three sub-models: Two OpenModelica
+The test model (see Figure \ref{fig:tlmtest} ) is a multibody system that consists of three sub-models: Two OpenModelica
 \textit{Shaft} sub-models (\textit{Shaft1} and \textit{Shaft2}) and one SKF/BEAST bearing sub-model that together build a \textit{double pendulum}. The SKF/BEAST bearing submodel is a simplified model with only three balls to speed up the simulation. 
 
 \textit{Shaft1} is connected with a spherical joint to the world coordinate system. The end of \textit{Shaft1} is connected via a \acrshort{tlm} interface to the outer ring of the BEAST bearing model. The inner ring of the bearing model is connected via another \acrshort{tlm} interface to \textit{Shaft2}. Together they build the double pendulum with two shafts, one spherical OpenModelica joint, and one BEAST bearing. 
@@ -188,21 +191,21 @@ The test model (see Figure [***] ) is a multibody system that consists of three 
 The text view (see Figure 8 \ref{fig:tlmtextview}) allows users to view the contents (sub-models, connections, and simulation
 parameters) of any loaded composite model. It also enables users to edit a composite model textually as
 part of the composite modeling construction process. To facilitate the process of textual composite modeling
-and to provide users with a starting point, the text view (see Figure 8 [***]) includes the composite model \acrshort{xml}
+and to provide users with a starting point, the text view (see Figure \ref{fig:tlmtextview}) includes the composite model \acrshort{xml}
 schema elements and the default simulation parameters. 
 
+\begin{landscape}
 \begin{figure}
 	\includegraphics[width=\linewidth]{tlm_textview.png}
 	\caption{A screenshot of textual composite modeling.}
 	\label{fig:tlmtextview}
 \end{figure}
+\end{landscape}
 
 \subsection{Composite Model Validation}
 \label{sec:tlmvalidation}
 
-Since model validation is part of the composite modeling process the composite model editor (see
-Figure 9 [**]) supports users by validating the composite model to ensure that it follows the structure and
-content rules specified in the composite model schema described in Section 4. In general the composite model
+Since model validation is part of the composite modeling process, the composite model editor supports users by validating the composite model to ensure that it follows the structure and content rules specified in the composite model schema described in Section 4. In general the composite model
 editor validation mechanism supports users to verify that: 
 
 \begin{itemize}
@@ -282,16 +285,17 @@ connected via \acrshort{tlm}-connections.
 	\label{fig:tlmapplication}
 \end{figure}
 
-\section{Summary and Discussion}
+\section{Summary}
 \label{sec:tlmsummary}
+
+In this chapter, we introduced a general open-source graphical editor and simulation tool for composite modeling and co-simulation as well as its integration with SKF’s TLM-based co-simulation framework for TLM based co-simulation. The graphical editor combines a number of features to support end-users with respect to the creation of composite models and co-simulation. These include adding, removing, and connecting components (submodels) both textually and graphically, as well as integrated co-simulation and visualization of simulation results. The composite model editor supports external non-Modelica models represented in XML form (essentially black boxes with interfaces) inside the component tree which can be used for composite model composition. It has successfully been tested for several simulation tools. A schema for validation of a composite modeling has been developed as a part of this work. 
 
 \subsection*{Acknowledgements}
 \label{sec:tlmAcknowledgements}
 
 The work has been supported by Vinnova in the ITEA2
-MODRIO project, by EU in the INTO-CPS project,
-and by the Swedish Government in the Swedish
-Government in the ELLIIT project. The Open Source Modelica Consortium supports the OpenModelica
+MODRIO project, by EU in the INTO-CPS project, and by the Swedish Government in the Swedish
+Government in the ELLIIT project. The open-source Modelica Consortium supports the OpenModelica
 work. The TLM based co-simulation framework is provided by SKF.
 
 
