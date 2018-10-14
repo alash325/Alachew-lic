@@ -31,17 +31,33 @@
 %%% Code:
 
 \chapter{Conclusions and Future Work}
-\label{cha:conclusion}
+\label{cha:conclusionsandfuturework}
 
-This chapter contains a summarization of the purpose and the research
-questions. To what extent has the aim been achieved, and what are the
-answers to the research questions?
+\section{Conclusions}
+\label{sec:conclusions}
 
-The consequences for the target audience (and possibly for researchers
-and practitioners) must also be described. There should be a section
-on future work where ideas for continued work are described. If the
-conclusion chapter contains such a section, the ideas described
-therein must be concrete and well thought through.
+The main goal of the thesis was to design and implement tools and methods through a proof of concept and prototype demonstration, which would increase the efficiency and quality of model-based development of complex and multi-domain cyber-physical systems.
+
+With respect to the objective “to ensure automatic solution of dynamic optimization problems by reusing simulation models for optimization”, we have developed model-based dynamic optimization approach by integrating optimization into the model development process. The feasibility of our approach was demonstrated by a prototype implementation and was illustrated on the solution of industrial-relevant optimal control problems including a diesel engine model. While the parameter sweep static design optimization method uses many simulations run, the dynamic optimization approach presented in this thesis uses a direct optimization of a whole solution trajectory iteratively to obtain the optimal solution with minimum computation and time. OpenModelica coupling with CasADi has shown the possibility to use an XML-based model exchange format for model-based dynamic optimization with state of the art optimization algorithms. The approach contributes to enable mathematical simulation models provided by Modelica and Optimica to be used efficiently for simulation-based optimization. The use of a language neutral model exchange format simplifies tool interoperability and allows modelers to conduct experiment with different optimization algorithms and choose the one that is best suited for their particular problem without the need to re-encode the problem formulation. As compared to traditional optimization frameworks, typically requiring modelers to encode the model, the cost function and the constraints in an algorithm-specific manner, the approach presented in this thesis increases flexibility significantly.    
+
+With respect to the objective “to ensure reusing and combining existing simulation models formalized by different experts in different modeling languages and tools for a unified system simulation”, we have developed a general open-source graphical and textual editor, and co-simulation framework for composite modeling and simulation of several connected subsystems using detailed models. Several tool specific simulation sub-models can be integrated and connected by means of a composite model represented in XML defining the physical interconnections between them. The approach is based on a general external interface definition that can be implemented for many different simulation tools using the TLM method. This enables to de-couple sub-models of the full system and allow them to be independently simulated and coupled in a numerically stable way via co-simulation techniques. Currently, most simulation tools for model-based development of cyber-physical systems are bound to a specific tool vendor. An open-source modeling and co-simulation environment for composite models will change that since it enables to integrate models defined in a specific language from many different simulation tool vendors in the design process. It has successfully been implemented and tested for several simulation tools. 
+
+With respect to the objective “to support advanced simulation modeling analysis”, we have enhanced the Python interface to simulate and access EOO Modelica models using Python objects for further simulation modeling analysis. Our tool, OMPython, is developed as a library using a standard distribution of Python and targeted to the OpenModelica modeling and simulation environment. However, general concepts can be applied to any other language and tool. In order to ensure reusability, only the standard libraries of Python were used. From modelers perspective, the Python interface makes scripting, plotting and analysis of results straightforward. This gives the modeler the possibility to use EOO simulation models together with the more powerful and easier to use API and Python libraries e.g. for tasks such as control design and post processing of simulation results. 
+
+We have also extended the list of simulator plugins for PySimulator by implementing a plugin for Wolfram’s SystemModeler. The integration of Wolfram SystemModeler simulator plugin use the simulation result analysis tools within PySimulator. Hence, comparing simulation results of the same model generated from SystemModeler with several other tools or different versions of the same model from SystemModeler tool can be applied. Comparing results of model simulation is very important for model portability and model evolution. This enables simulation models from SystemModeler can be safely utilized and integrated in different tools in the design process.
+
+With respect to the objective “to ensure automatic traceability between requirements, simulation models, FMUs and simulation results artifacts and keep track of changes and integration of product design tools with modeling and simulation tools”, we have developed a tool-supported method for multi-domain  collaborative modeling and traceability support throughout the developments in CPSs. A design and implementation for seamless tracing and interoperability of lifecycle artifacts in OpenModelica integrated with the INTO-CPS tool-chain of CPS design has been developed based on linked data approach. A tool interoperability approach based on the Linked data method for traceability improves the reusability of simulation models between tools in distributed collaborative development flows. Hence, system designers and analysts with expertise in different domains can effectively collaborate on the design of complex systems. The approach presented in this thesis contributes to an important step in the integration of different modeling tools that are used in the whole tool-chain of CPS design, from systems modeling down to co-simulation and test automation. This can be used to support several activities such as impact analysis, component reuse, verification, and validation. 
+
+The message format and schema for the traceability information has been standardized in order to ensure that all tools use the same format for sending their trace data. This schema, together with the use of standardized specifications and formats, allows other tool vendors to easily integrate their tools in the INTO-CPS tool-chain traceability environment. Currently, the traceability data is stored in a graph database which can be queried for generating various reports such as impact analysis. Furthermore, users can easily query this database to retrieve specific information about the links between different entities, such as requirements, users, test results or models (FMUs).
+
+
+\textbf{???The consequences for the target audience (and possibly for researchers and practitioners) must also be described.????}
+
+
+
+\section{Future Work}
+\label{sec:futurework}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

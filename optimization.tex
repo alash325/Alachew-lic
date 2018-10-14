@@ -310,7 +310,9 @@ Amendments to the initial values, the process is robust. For this purpose, the i
 \section{Summary}
 \label{sec:optimizationsummary}
 
-In this chapater, the integration of CasADi and OpenModelica for model-based dynamic optimization based on an XML format for exchange of DAE models has been reported.  OpenModelica supports export of models in this XML format, wheras CasADi supports import of models expressed in this format. In order to present the proposed solution, we have demonstrated the solution of an industrial-relevant optimal control problem of diesel engine model. OpenModelica coupling with CasADi has shown the possibility to use an XML-based model exchange format for model-based dynamic optimization with state of the art optimization algorithms.  
+This chapter demonstrates simulation-based  optimization through the coupling of two open source tools: OpenModelica, which is a Modelica-based modeling and simulation platform, and CasADi, a framework for numerical optimization. The coupling uses a standardized XML format for exchange of
+differential-algebraic equations (DAE) models. OpenModelica supports export of models written in Modelica and the optimization language extension using this XML format, while CasADi supports import of models represented in this format. This allows users to define optimal control problems (OCP) using
+Modelica and optimization language specification, and solve the underlying model formulation using a range of optimization methods, including direct collocation and direct multiple shooting. The proposed solution has been tested on several industrially relevant optimal control problems, including a dieselelectric power train.
 
 \subsection*{Acknowledgements}
 \label{sec:optimizationacknowledgements}

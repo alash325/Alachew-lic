@@ -40,7 +40,7 @@
 
 Modeling and simulation of Cyber-Physical Systems (CPSs) are becoming more important in many engineering applications. Building mathematical models and the ability to simulate their behavior enables engineers to virtually analyze the system without making experiments on the real system that would otherwise be too expensive, risky, or time-consuming. As a result, the design with different concepts can be thoroughly tested, evaluated and optimized before building the physical prototypes. This, in principle, enables systems engineers to identify a wider set of early system-level mistakes and increase the quality of products.
 
-The interest in Equation-based Object-Oriented (EOO) languages and tools has sharply increased in the past years in the industry because of their increasing importance in modeling, simulation, and specification of complex systems. There exist several different \acrshort{eoo} modeling languages and tools today for mathematical modeling and simulation of large and heterogeneous physical systems. Some examples of such system modeling and simulation languages and tools are Modelica \cite{modelica}, MSC.ADAMS \cite{adams}, SKF’s BEAST(BEAring Simulation Toolbox) \cite{beast}, VHDL-AMS \cite{vhdlamsernst, vhdlamsieee}, Simulink/Simscape \cite{simulink}, SysML \cite{sysml,sysmlmorgan}, and ModelicaML \cite{modelicamlreport, modelicaml}, etc. Such languages open the possibility to model multi-disciplinary dynamic complex systems through reusable model components, and generate simulation code  for a number of different platorms. However, in spite of the similarities of their modeling and simulation needs, it is often difficult to use such EOO languages and tools in combination.
+The interest in Equation-based Object-Oriented (EOO) languages and tools has sharply increased in the past years in the industry because of their increasing importance in modeling, simulation, and specification of complex systems. There exist several different \acrshort{eoo} modeling languages and tools today for mathematical modeling and simulation of large and heterogeneous physical systems. Some examples of such system modeling and simulation languages and tools are Modelica \cite{modelica}, MSC.ADAMS \cite{adams}, SKF’s BEAST(BEAring Simulation Toolbox) \cite{beast}, VHDL-AMS \cite{vhdlamsernst, vhdlamsieee}, Simulink/Simscape \cite{simulink}, SysML \cite{sysml,sysmlmorgan}, and ModelicaML \cite{modelicamlreport, modelicaml}, etc. Such languages open the possibility to model multi-disciplinary dynamic complex systems through reusable model components, and generate simulation code  for a number of different platforms. However, in spite of the similarities of their modeling and simulation needs, it is often difficult to use such EOO languages and tools in combination.
 
 While modeling and simulation remain important tools for engineers in many disciplines, the landscape is shifting towards a more flexible and diverse use of model-based design methodologies. Many system engineers depend heavily on model-based design and control of dynamic complex \acrshort{cps} involving different science and engineering disciplines. Of paramount importance is the ability to capture all central aspects of such systems in the models as an executable specification to reflect the evolution of the system, including the physical behavior of the system components and the architecture description of its software and hardware. 
 
@@ -88,25 +88,40 @@ A common situation in industry is that a system model is composed of several sub
 
 \end{description}
 
+
+\section{Research Questions}
+\label{sec:Research Questions}
+
+Our overall goal is to design and implement tools and methods through a proof of concept and prototype demonstration that would increase the process of model-based development of CPSs efficiency and quality. We formulate the following research question:
+
+\textit{How can the features and functionality of computer-aided CPSs modeling and simulation tools be improved in order to make the process of model-based development of CPSs more efficient and usable in the product development process ? } 
+
+To answer the research question we pursue five specific objectives: 
+\begin{itemize}
+
+ \item to ensure creating automatic links and traceability between requirements, simulation models, FMUs  and simulation results artifacts 
+ \item to ensure integration of product design tools with modeling and simulation tools and keep track of changes
+ \item to ensure automatic solution of dynamic optimization problems by reusing simulation models for optimization  
+ \item to ensure reusing and combining existing simulation models formalized by different experts in different modeling languages by means of numerically stable co-simulation modeling 
+ \item to support advanced simulation modeling analysis 
+
+\end{itemize}
+
+\textbf{ \textit{????? In our solution we did not want to develop a completely new framework rather to achieve our goals by reusing and combining existing technologies and extending them if necessary. Thus, our approach is targeted as a complementary contribution to high-level collaboration integration environments. ????? }} With our solution we address the following properties: openness, generality, model portability, tool interoperability, model integration, model reusability, and model evolution and model maintenance.
+
 \section{Contributions}
 \label{sec:Contributions}
 
-
-The main contributions of the work presented in this thesis towards our ultimate goal of an Integration framework, to ensure high quality of models, tools, and their interoperability and traceability of artifacts for efficient model-based development of \acrshort{cps} are as follows:
+The main contributions of the work presented in this thesis towards our ultimate goal of an integrated framework, to ensure high quality of simulation models, tools interoperability and traceability of artifacts for efficient model-based development of \acrshort{cps} are as follows:
 
 \begin{itemize}
 	
-\item \textbf{We have developed a model-based dynamic optimization approach 
-by integrating optimization into the model development process.}
-Models and optimization algorithms are combined into an integrated 
-model. Specifically, the systems to be controlled are formulated 
-in Modelica and, the corresponding optimization problem expressed 
-in Optimica \cite{optimica}. This allows an efficient optimizing of 
-heterogeneous physical systems as simulation models are reused for optimization.
+\item \textbf{We have developed a model-based dynamic optimization approach by integrating optimization into the model development process.}
+Models and optimization algorithms are combined into an integrated model. Specifically, the systems to be controlled are formulated in Modelica and, the corresponding optimization problem expressed in Optimica \cite{optimica}. This allows an efficient optimizing of heterogeneous physical systems as simulation models are reused for optimization.
 
 \item \textbf{We have developed a versatile graphical co-modeling editor and co-simulation framework based on \acrshort{tlm} method.} This enables for modeling, connecting, and simulation of several different modeling tools using \acrshort{tlm} co-simulation technique, which is numerically stable and efficient simulation. \textbf{We have also provided a schema for standardizing the structure and validation constraints of a composite model.} 
 
-\item \textbf{We have developed a tool- supported method for multidisciplinary collaborative modeling and traceability support throughout the developments in CPSs.} This enables recording and establishing the traceability links of model elements (e.g. Requirements, activities, artifacts, modeling tools, simulation results, validation, verification) through a standardize interface and format using Open Services for Lifecycle Collaboration (OSLC). The artifacts processed and generated by a tool-chain are stored in a global data repository that supports version control and enables traceability at all stages of developments.\textbf{ We have also provided a schema for standardizing the structure and validation constraints of traceability data that can be used by several simulation and requirements modeling tools.} 
+\item \textbf{We have developed a tool-supported method for multi-domain collaborative modeling and traceability support throughout the developments in CPSs.} This enables recording and establishing the traceability links of model elements (e.g. requirements, activities, artifacts, modeling tools, simulation results, validation, verification) through a standardize interface and format using Open Services for Lifecycle Collaboration (OSLC). The artifacts processed and generated by a tool-chain are stored in a global data repository that supports version control and enables traceability at all stages of developments.\textbf{ We have also provided a schema for standardizing the structure and validation constraints of traceability data that can be used by several simulation and requirements modeling tools.} 
 
 \item \textbf{Increased \acrshort{eoo} simulation modeling analysis,} helping the user for controlling simulation models and automatically analyzing simulation results using various packages in Python, like a Fast Fourier Transform (FFT) analysis to improve simulation models for more efficient simulation. We have extended the list of simulator plugins for automatic simulation results analysis tool, PySimulator \cite{pysimulator}, by Wolfram SystemModeler \footnote{http://wolfram.com/system-modeler/} simulator. We have also extended OMPython \cite{ompython} which enables simulation and analysis of \acrshort{eoo} Modelica models with a better integration with Python.
 
@@ -159,7 +174,7 @@ The thesis is organized as follows:
 
 \item \textbf{Chapter \ref{cha:python} – Advanced Simulation Modeling Analysis} presents modeling and simulation tools interoperability and communication with python for controlling simulation models and advanced analysis of simulation results for more efficient simulation.
 
-\item \textbf{Chapter \ref{cha:conclusion} – Conclusions and Future Work} concludes the work presented in this thesis and discusses the possible directions for the future work.
+\item \textbf{Chapter \ref{cha:conclusionsandfuturework} – Conclusions and Future Work} concludes the work presented in this thesis and discusses the possible directions for the future work.
 
 \end{description}
 
