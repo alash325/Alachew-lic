@@ -23,7 +23,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 
 %%% Change log:
-%% 
+%% Completed Language Reading MBS
 %% 
 %% RCS $Log$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -35,7 +35,7 @@
 \label{cha:python}
 
 
-This chapter is based on the following paper:
+This chapter is based on the following papers:
 
 \begin{itemize}
 		
@@ -48,9 +48,9 @@ This chapter is based on the following paper:
 \section{Introduction}
 \label{sec:pythonintroduction}
 
-EOO languages such as Modelica have relatively little support for advanced analysis of models and synthesis needed for control systems design, particularly for optimal control problems (OCPs). Examples of such desirable analysis capabilities could be (i) study of model sensitivity, (ii) random number generation and statistical analysis, (iii) Monte Carlo simulation, (iv) advanced plotting capabilities, (v) general optimization capabilities, (vi) linear analysis and control synthesis, etc. Scripting languages such as MATLAB and Python hold most of these desirable analysis capabilities, and it is of interest to integrate Modelica models with such script languages. For this purpose, we choose to work with Python and OpenModelica due to their open-source availabiliy.
+EOO languages such as Modelica have relatively little support for the advanced model analysis and synthesis needed for control systems design, particularly for optimal control problems (OCPs). Examples of such desirable analysis capabilities include (i) study of model sensitivity, (ii) random number generation and statistical analysis, (iii) Monte Carlo simulation, (iv) advanced plotting capabilities, (v) general optimization capabilities, (vi) linear analysis and control synthesis, etc. Scripting languages such as MATLAB and Python include most of these desirable analytical capabilities, and it is of interest to integrate Modelica models with such scripting languages. For the purposes of this work, we have chosen to use Python and OpenModelica due to their open-source availability.
 
-A Python API for controlling Modelica simulation and analysis from Python was proposed in February 2015 \footnote{Python API for Accessing OpenModelica Models, by B. Lie, February 20, 2015.}. Based on this proposal, we have developed a first version of a Python API for operating on Modelica models in Python has been developed. In this chapter, we present how to generate a Python obejct from EOO modelica model, how to set operating conditions, and how to run the simulation to produce a result object are illustrated . Furthermore, how to carry out linearization of a model object, the possibility of carrying out parameter sensitivity studies, and how to extract results from the result object to Python are described. The proposed solution has been tested on several industrial relevant models and how it can be used for automatic analysis of Modelica models from Python is illustrated, exemplified by a simple water tank model.
+A Python API for controlling Modelica simulation and analysis from Python was proposed in February 2015\footnote{Python API for Accessing OpenModelica Models, by B. Lie, February 20, 2015.}. Based on this proposal, we have developed an initial version of a Python API for operating on Modelica models in Python. In this chapter, we present how to generate a Python object from an EOO Modelica model, how to set operating conditions, and how to run the simulation to produce a result object. Furthermore, we describe how to carry out linearization of a model object, the possibility of carrying out parameter sensitivity studies, and how to extract results from the result object to Python. The proposed solution has been tested on several industrially-relevant models, and its use for automatic analysis of Modelica models from Python is illustrated using a simple water tank model.
 
 \section{Description of the API}
 \label{sec:pythonapi}
@@ -60,18 +60,18 @@ The API is described in the subsections below.
 \subsection{Python Class and Constructor}
 \label{subsec:pythonclass}
 
-The name of the Python class which is used for operation on Modelica models, is \textit{ModelicaSystem}.
-This \textit{class} is equipped with an object constructor of the same name as the class. In addition, the class is equipped
+The name of the Python class that is used for operation on Modelica models is \textit{ModelicaSystem}.
+This \textit{class} is equipped with an object constructor with the same name as the class. In addition, the class is equipped
 with a number of methods for manipulating the instantiated objects. In this subsection, we discuss how to import the class, and
-how to use the constructor to instantiate an object. The object is imported from package OMPython, i.e. with
+how to use the constructor to instantiate an object. The object is imported from package OMPython, i.e., with
 Python commands.
 
 \begin{lstlisting}
   >>>from OMPython import ModelicaSystem
 \end{lstlisting}
 
-Other Python packages to be used such as \textit{numpy},\textit{matplotlib}, \textit{pandas}, etc. must be imported in a similar
-manner.The object constructor requires a minimum of 2 input arguments which are strings, and may need a third string input
+Other Python packages to be used, such as \textit{numpy},\textit{matplotlib}, \textit{pandas}, etc. must be imported in a similar
+manner. The object constructor requires a minimum of 2 input arguments which are strings, and may need a third string input
 argument.
 
 \begin{itemize}
@@ -79,10 +79,10 @@ argument.
 	       Modelica file is not in the current directory of Python, then the file path must also be included.
 	\item The \textit{second input argument} must be a string with the name of the Modelica model, including the namespace if the model is wrapped 
 		  within a Modelica package.
-	\item A \textit{third input argument} is used if the Modelica model builds on other Modelica code, e.g. the Modelica Standard Library.
+	\item A \textit{third input argument} is used if the Modelica model builds on other Modelica code, e.g., the Modelica Standard Library.
 \end{itemize}
 
-Example 1: Use of constructor.Suppose we have a Modelica model with name CSTR wrapped in a Modelica package \textit{Reactors} — stored in file
+Example 1: Use of constructor. Suppose we have a Modelica model with name CSTR wrapped in a Modelica package \textit{Reactors} — stored in file
 \textit{Reactor.mo}:
 
 \begin{lstlisting}
@@ -132,51 +132,50 @@ file extension \textit{.fmu}.
 	\end{itemize}
 	\item \textit{convertFmu2Mo(s)} — method for converting an FMU file into a Modelica file.
 	\begin{itemize}
-		\item Required input arguments: string s, where s is name of FMU file, including extension \textit{.fmu}.
-        \item Optional input arguments: a number of optional input arguments, e.g. the possibility to change working directory for the imported FMU files.
+		\item Required input arguments: string s, where s is the name of an FMU file, including extension \textit{.fmu}.
+        \item Optional input arguments: a number of optional input arguments, e.g., the possibility to change working directory for the imported FMU files.
         \item Result: Assume the name of the file is \textit{fmuName.fmu}. Then file \textit{fmuName\_me\_FMU.mo} is generated in the current Python  
         	  directory.
 	\end{itemize}
 	\item \textit{Getting and setting information:} Quite a few methods are dedicated to getting and setting information about
-	objects. With two exceptions — \textit{getQuantities()} and \textit{getSolutions()} — the get methods have identical use of input arguments and results, while all the set methods have identical use of input arguments, with results	stored in the object.
+	objects. With two exceptions — \textit{getQuantities()} and \textit{getSolutions()} — the use of input arguments and results is identical for all get methods, while input arguments are used identically for all of the set methods, with results	stored in the object.
 	
 	The Method \textit{getQuantities()} does not accept input arguments, and returns a list of dictionaries, one dictionary for each
 	quantity. Each dictionary has the following keys — with values being strings, too.
 	\begin{itemize}
 		\item \textit{Changeable} — value \textit{'true'} or \textit{'false'},
-		\item \textit{Description} — the string used in Modelica to describe the quantity, e.g. \textit{'Mass in tank, kg'},
-		\item \textit{Name} — the name of the quantity, e.g. \textit{'T', 'der(T)', 'n[1]', 'mod1.T'}, etc.,
-		\item \textit{Value} — the value of the quantity, e.g. \textit{'None', '5.0'}, etc.,
+		\item \textit{Description} — the string used in Modelica to describe the quantity, e.g., \textit{'Mass in tank, kg'},
+		\item \textit{Name} — the name of the quantity, e.g., \textit{'T', 'der(T)', 'n[1]', 'mod1.T'}, etc.,
+		\item \textit{Value} — the value of the quantity, e.g., \textit{'None', '5.0'}, etc.,
 		\item \textit{Variability} — \textit{'continuous','parameter'}.
     \end{itemize}
-	When applying the\textit{Pandas method DataFrame} to the returned list of dictionaries, the result is a conveniently
+	When applying the \textit{Pandas method DataFrame} to the returned list of dictionaries, the result is a conveniently
 	typeset table in Jupyter notebooks. Modelica \textit{constants} are not included in the returned quantities. Standard get 
-	methods \textit{getXXXs()}, where \textit{XXXs} is in	\textit{{Continuous, Parameters, Inputs, Outputs,SimulationOptions, OptimizationOptions,LinearizationOptions}} are considered.Thus, methods \textit{getContinuous(), getParameters()}, etc.
+	methods \textit{getXXXs()}, where \textit{XXXs} is in	\textit{{Continuous, Parameters, Inputs, Outputs,SimulationOptions, OptimizationOptions,LinearizationOptions}} are considered. Thus, methods \textit{getContinuous(), getParameters()}, etc.
 	Two Standard get methods are accepted.
 	\begin{itemize}
-		\item \textit{getXXXs()}, i.e. without input argument, returns a dictionary with names as keys and values as ... values.
+		\item \textit{getXXXs()}, i.e., without input argument, returns a dictionary with names as keys and values as ... values.
 		\item \textit{getXXXs(S)}, where S is a sequence of strings of names, returns a tuple of values for the specified names.
     \end{itemize}
 	Getting solutions: We consider method getSolutions(). Two calling possibilities are accepted.
 	\begin{itemize}
-		\item \textit{getSolutions()}, i.e. without input arguments, returns a list of strings of names of quantities for
+		\item \textit{getSolutions()}, i.e., without input arguments, returns a list of strings of names of quantities for
 			          which there is a solution = time series.
 		\item \textit{getSolutions(S)}, where S is a sequence of strings of names, returns a tuple of values = 1D
 					numpy arrays = time series for the specified names.
 	\end{itemize}
-	Setting methods: The information that can be set is a subset of the information that can
-	be set. Thus, we consider methods \textit{setXXXs()}, where \textit{XXXs} is in \textit{(Parameters, Inputs, SimulationOptions, OptimizationOptions,
+	Setting methods: We consider the method \textit{setXXXs()} to set the information, where \textit{XXXs} is in \textit{(Parameters, Inputs, SimulationOptions, OptimizationOptions,
 	LinearizationOptions=, thus methods setParameters(), setInputs()}, etc. Two calling possibilities are accepted.
 	\begin{itemize}
 		\item \textit{setXXXs(K)}, with K being a sequence of keyword assignments of type \textit{quantity name = value}. Here, the quantity name could  
 		         be a parameter name (i.e., not a string), an input name, etc.
        \begin{itemize}
          	\item For parameters and simulation/optimization/linearization options, the value should be a numerical value or a string
-         		(e.g. a string of ODE solver name such as \textit{'dassl'}, etc.).
+         		(e.g., a string of ODE solver name such as \textit{'dassl'}, etc.).
          	\item For inputs, the value could be a numerical value if the input is constant in the time range of the simulation,
          	\item For inputs, the value could alternatively be a list of tuples $(t_j, u_j)$, i.e., $[(t_1, u_1) , (t_2, u_2) ,...., (t_N, u_N)]$ where the input varies linearly between $(t_j ; u_j)$ and $(t_{j+1}, u_{j+1})$, where $t_j \leq t_{j+1}$, and where
-         	at most two subsequent time indices $t_j, t_{j+1}$ can have the same value. As an example, $[..., (1,10), (1,20), ...] $describes a perfect jump in input value from value 10 to value 20 at time instance 1.
-         	\item This type of sequence of input arguments does not work for certain quantity names, e.g.\textit{'der(T)', 'n[1]', 'mod1.T'}, because
+         	at most two subsequent time indices $t_j, t_{j+1}$ can have the same value. As an example, $[..., (1,10), (1,20), ...] $ describes a perfect jump in input value from value 10 to value 20 at time instance 1.
+         	\item This type of sequence of input arguments does not work for certain quantity names, e.g.,\textit{'der(T)', 'n[1]', 'mod1.T'}, because
          		Python does not allow for label names \textit{der(T), n[1], mod1.T}, etc.
        \end{itemize}
 		         
@@ -185,7 +184,7 @@ file extension \textit{.fmu}.
 	\end{itemize}
 	
 	\item \textit{Operating on Python object: simulation, optimization:} The following methods operate on the object, and
-	have no input arguments. The methods have no return values, instead the results are stored within the object.To retrieve the results, method 	\textit{getSolutions()} is used as described previously.
+	have no input arguments. The methods have no return values, instead the results are stored within the object. To retrieve the results, method 	\textit{getSolutions()} is used, as described previously.
 	\begin{itemize}
 		\item \textit{simulate()} — simulates the system with the given simulation options.
 		\item \textit{optimize()} — optimizes the Optimica problem with the given optimization options.
@@ -195,7 +194,7 @@ file extension \textit{.fmu}.
 	\begin{itemize}
 		\item \textit{linearize()} — with no input argument, returns a tuple of 2D numpy arrays (matrices) A, B, C and D.
 		\item \textit{getLinearInputs()} — with no input argument, returns a list of strings of names of inputs used when forming matrices B and D.
-		\item \textit{getLinearOutputs()} — with no input argument,returns a list of strings of names of outputs used when forming matrices C and D.
+		\item \textit{getLinearOutputs()} — with no input argument, returns a list of strings of names of outputs used when forming matrices C and D.
 		\item \textit{getLinearStates()} — with no input argument, returns a list of strings of names of states used when forming matrices A, B, C and
 	\end{itemize}
 \end{enumerate}
@@ -212,8 +211,8 @@ through a hole in the bottom at effluent mass flow rate $\dot{m}_e$, while at th
 	\label{fig:pythonwatertankmodel}
 \end{figure}
 
-Our modeling objective is to find the liquid level h.This objective is illustrated by the functional diagram in
-Figure \ref{fig:pythonwatertankfunctional}. The functional diagram depicts the causality of the system (“Tank with influent and effluent mass flow”),where inputs (green arrow) cause a change in the system and is observed at outputs (orange arrow)\footnote{Although Modelica is an acausal modeling language, it is useful to think in terms of causality during model development.}. Here, the input variable is the influent mass flow rate $\dot{m}_i$, while the output variable is the quantity we are interested in, $h$.
+Our modeling objective is to find the liquid level h. This objective is illustrated by the functional diagram in
+Figure \ref{fig:pythonwatertankfunctional}. The functional diagram depicts the causality of the system (“Tank with influent and effluent mass flow”), where inputs (green arrow) cause a change in the system and its output (orange arrow)\footnote{Although Modelica is an acausal modeling language, it is useful to think in terms of causality during model development.}. Here, the input variable is the influent mass flow rate $\dot{m}_i$, while the output variable is the quantity we are interested in, $h$.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{python_water_tank_functional.png}
@@ -240,7 +239,7 @@ To complete the model description, we need to specify model parameters and opera
 
 \begin{table}
 	\begin{center}
-		\caption{Parameters for driven tank with constant cross sectionsal area.} 
+		\caption{Parameters for driven tank with constant cross sectional area.} 
 		\label{tab:tablemodelparameters} 
 		\begin{tabular}{ cccc } 
 			\hline
@@ -256,7 +255,7 @@ To complete the model description, we need to specify model parameters and opera
 
 \begin{table}
 	\begin{center}
-		\caption{Operating condition for driven tank with constant cross sectionsal area.} 
+		\caption{Operating condition for driven tank with constant cross sectional area.} 
 		\label{tab:tablemodeloperatingconditions} 
 		\begin{tabular}{ cccc } 
 			\hline
@@ -313,22 +312,21 @@ constants and variables are specified, and a second section where the model equa
 \end{lstlisting}
 
 As seen from the first section of model \textit{ModWaterTank}, the model has 4 essential parameters
-$(rho-h_max)$ of which one is a Modelica constant $(rho)$ while other 3 are design parameters, compare this
-to Table I. Furthermore, the model contains 2 "initial state" parameters, where 1 of them can be chosen at
+$(rho-h_max)$, one of which is a Modelica constant $(rho)$ while the other 3 are design parameters (compare this
+to Table I). Furthermore, the model contains 2 "initial state" parameters, where 1 of them can be chosen at
 liberty, $h_0$, while the other one, $m_0$, is computed automatically from $h_0$, see Table II. The purpose of
 the "free parameter" $h_0$ is that it is easier for the user to specify level than mass. Also, free "initial state"
-parameters makes it possible for the user to change the initial states from outside of model ModWaterTank, e.g., from Python.
+parameters make it possible for the user to change the initial states from outside of model ModWaterTank, e.g., from Python.
 
-Next, one variable is given with initial value — the state $m$ — is initialized with the "initial state" parameter
+Next, one variable is given with an initial value — the state $m$ — which is initialized with the "initial state" parameter
 $m_0$. Then, 2 variables are defined as auxiliary variables (algebraic variables), $V$ and $md_e$\footnote{$md$ is notation for $m$ with a dot, $\dot{m}$ , i.e., a mass flow rate.}
 
-One input variable is defined — $md_i$ — this is the influent mass flow rate $\dot{m}_i$, see Table \ref{tab:tablemodeloperatingconditions}. Inputs are
-characterized by that their values are not specified in model the core model — here\textit{ModWaterTank} . Instead,
+One input variable is defined — $md_i$ — which is the influent mass flow rate $\dot{m}_i$, see Table \ref{tab:tablemodeloperatingconditions}. Inputs have the characteristic that their values are not specified in the core model — here\textit{ModWaterTank}. Instead,
 their values must be given in an external model/code — we will specify this input in Python. Finally, 1 output is
 given — $h$.
 
-In the second section of model \textit{ModWaterTank}, the Model equations exactly map the mathematical model
-given in Section \ref{subsec:pythonmodelsummary}. For illustrative purposes, the core model \textit{ModWaterTank} is wrapped within a package named
+In the second section of model \textit{ModWaterTank}, the model equations exactly map the mathematical model
+given in Section \ref{subsec:pythonmodelsummary}. For purposes of illustration, the core model \textit{ModWaterTank} is wrapped within a package named
 \textit{WaterTank} and stored in file \textit{WaterTank.mo},
 
 
@@ -368,20 +366,20 @@ First, for example on Jupyter notebook, the following Python statements are exec
 Here, we use \textit{NumPy} to handle simulation results, etc. The random number package will be used in
 a sensitivity/Monte Carlo study. The \textit{magic} function \textit{\%matplotlib inline} is used to embed Matplotlib
 plots within the Jupyter notebook; to save these plots into files, simply right-click the plots. However, more options
-for saving files are available if the magic function is \textit{excluded}, and instead command \textit{plt.show()} is added
-after the plot commands have been completed. Pandas are used to illustrate presenting data in tables in Jupyter
+for saving files are available if the magic function is \textit{excluded}, and the \textit{plt.show()} command is instead added
+after the plot commands have been completed. The pandas library is used to illustrate presenting data in tables in a Jupyter
 notebook. Finally, label \textit{LW} is used to give a conform line width in plots.
 
 \subsection{Basic Simulation of Model}
 \label{subsec:pythonsimulatemodel}
 
-We instantiate object \textit{tank} by running \acrshort{omc} Server up with the following command:
+We instantiate object \textit{tank} by running the \acrshort{omc} Server with the following command:
 
 \begin{lstlisting}
 	tank = ModelicaSystem('WaterTank.mo','WaterTank.ModWaterTank')
 \end{lstlisting}
 
-Next, we are interested in which \textit{quantities} are available in the model.Python prompt \textit{>>>} is used when Jupyter
+Next, we are interested in which \textit{quantities} are available in the model. Python prompt \textit{>>>} is used when Jupyter
 notebook actually uses \textit{In[*]} — where \textit{*} is some number, while the response in Jupyter notebook is prepended
 with \textit{Out[*]}.
 
@@ -400,7 +398,7 @@ with \textit{Out[*]}.
 	>>> pd.DataFrame(q)
 \end{lstlisting}
 
-The last command leads Jupyter notebook to typeset a tabular presentation of the quantities, Figure \ref{fig:pythontypesetting}  The results
+The last command leads Jupyter notebook to typeset a tabular presentation of the quantities, Figure \ref{fig:pythontypesetting}. The results
 in Figure \ref{fig:pythontypesetting} should be compared to the Modelica model in \ref{subsec:pythonmodleicamodel}. Observe that Modelica \textit{constants} are not included in the quantity list.
 
 \begin{figure}
@@ -421,19 +419,19 @@ Next, we check the simulation options:
 \end{lstlisting}
 
 It should be observed that the \textit{stepSize} is the frequency at which solutions are stored, and is not the step
-size of the solver. The number of data points \textit{stored}, is thus \textit{(stopTime-startTime)/stepSize} with due
+size of the solver. The number of data points \textit{stored} is thus \textit{(stopTime-startTime)/stepSize} with appropriate
 rounding. This means that if we increase the \textit{stopTime} to a large number, we should also increase the \textit{stepSize} to
-avoid storing a large number of information.
+avoid storing a large volume of information.
 
 
-To this end, we want to simulate the system for a long time, until the level reaches steady state. Possible inputs are:
+To this end, we want to simulate the system for a long time, until the level reaches a steady state. Possible inputs are:
 
 \begin{lstlisting}
 	>>> tank.getInputs(){'md_i': None}
 \end{lstlisting}
 
-where value None implies that the available input, $md_i$,has yet not been set. We could use \textit{None} as input, which will be interpreted as zero. 
-But let us instead set $\dot{m}_i = 3$, simulate for a long time, and change "initial state"
+where value None implies that the available input, $md_i$, has not yet been set. We could use \textit{None} as input, which will be interpreted as zero. 
+But let us instead set $\dot{m}_i = 3$, simulate for a long time, and change the "initial state"
 parameter $h (0)$ to the steady state value of $h$:
 
 \begin{lstlisting}
@@ -445,14 +443,14 @@ parameter $h (0)$ to the steady state value of $h$:
 	>>> tank.setParameters(h_0 = h[-1])
 \end{lstlisting}
 
-Next, we set back to stop time to 10, and specify an input sequence with a couple of jumps:
+Next, we set back the stop time to 10, and specify an input sequence with a couple of jumps:
 
 \begin{lstlisting}
 	>>> tank.setSimulationOptions\(stopTime=10, stepSize=0.02)
 	>>> tank.setInputs(md_i = [(0,3),(2,3),(2,4),(6,4),(6,2),(10,2)])
 \end{lstlisting}
 
-Finally, we simulate the model with the time varying input,and plot the result:
+Finally, we simulate the model with the time varying input, and plot the result:
 
 \begin{lstlisting}
 	>>> tank.simulate()
@@ -471,14 +469,14 @@ The result is displayed in Figure \ref{fig:pythonwatertanklevelplot}.
 		given by the list $[(0; 3); (2; 3); (2; 4); (6; 4); (6; 2); (10; 2)]$.}
 	\label{fig:pythonwatertanklevelplot}
 	\includegraphics[width=\linewidth]{python_water_tank_level_sensitivity_plot.png}
-	\caption{Uncertainty in tank level with a 5\% uncertainty in valveconstant $K$. The input the same as in Figure \ref{fig:pythonwatertanklevelplot}}
+	\caption{Uncertainty in tank level with a 5\% uncertainty in valve constant $K$. The input is the same as in Figure \ref{fig:pythonwatertanklevelplot}}
 	\label{fig:pythonwatertanklevelsensitivityplot}
 \end{figure}
 
 \subsection{Parameter Sensitivity/Monte Carlo Simulation}
 \label{subsec:pythonparametersensitivity}
 
-It is of interest to study how the model behavior varies with varying uncertain parameter values, e.g. the effluent
+It is of interest to study how the model behavior varies with varying uncertain parameter values, e.g., the effluent
 valve constant $K$. This can be done as follows:
 
 \begin{lstlisting}
@@ -500,13 +498,13 @@ valve constant $K$. This can be done as follows:
 	>>> plt.legend()
 \end{lstlisting}
 
-The result is as shown in Figure \ref{fig:pythonwatertanklevelsensitivityplot}.
+The result is shown in Figure \ref{fig:pythonwatertanklevelsensitivityplot}.
 
 \section{Integration of Wolfram SystemModeler Simulator in PySimulator}
 \label{sec:pythonwolframplugin}
 
 PySimulator supports simulation of models in FMU form or using different Modelica tools via extension
-plugins. From previous work simulator plugins for tools such as Dymola, SimulationX, and OpenModelica are available. 
+plugins. Simulator plugins for tools such as Dymola, SimulationX, and OpenModelica are available from previous work. 
 This section presents a new simulator plugin developed for Wolfram SystemModeler.
 
 \begin{figure}
@@ -516,29 +514,29 @@ This section presents a new simulator plugin developed for Wolfram SystemModeler
 \end{figure}
 
 Wolfram SystemModeler has its own symbolic mathematical computation program, Mathematica \cite{mathematica}, which can be used
-to perform actions via the Wolfram SystemModeler link (WSMLink) API \cite{wsmlink} such as loading, compilation and 
-simulation of models or plotting of results. WSMLink provides functionality for integrating Wolfram SystemModeler and Mathematica  
+to perform actions via the Wolfram SystemModeler link (WSMLink) API \cite{wsmlink}, such as loading, compilation and 
+simulation of models, or plotting of results. WSMLink provides functionality for integrating Wolfram SystemModeler and Mathematica  
 with complete access to models and simulations.
 
-Wolfram SystemModeler can be interfaced to other tools via MathLink \cite{mathlink} which is a library of functions that 
+Wolfram SystemModeler can be interfaced to other tools via MathLink \cite{mathlink}, which is a library of functions that 
 implement a protocol for sending and receiving Mathematica expressions. MathLink \cite{mathlinktutorial,mathlink} allows external
-programs both to call Mathematica, and to be called by Mathematica . It is possible to create a front end that 
-implements your own user interface , and communicates with the Mathematica kernel via MathLink \cite{mathlinkc}.
+programs to both call Mathematica and be called by Mathematica. It is possible to create a front end that 
+implements your own user interface and communicates with the Mathematica kernel via MathLink \cite{mathlinkc}.
 
-Using the existing plugin interface for simulator plugins in PySimulator a new simulator plugin has
+Using the existing interface for simulator plugins in PySimulator, a new simulator plugin has
 been implemented: the Wolfram plugin. It enables PySimulator to load and numerically simulate
 Modelica models using Wolfram SystemModeler.
 
 The Wolfram plugin is integrated into PySimulator via MathLink and Pythonica \cite{pythonica}, which connects to Mathematica and
 SystemModeler. We used the Wolfram SystemModeler API to support loading a Modelica model, simulating
-it, and reading the simulation setting file (\textit{.sim}) which is an XML file to build the variable tree in the
+it, and reading the simulation setting file (\textit{.sim}), which is an XML file, to build the variable tree in the
 variables browser of PySimulator. The overall communication setup with SystemModeler is given in
 Figure \ref{fig:pythonwolframcommunication}.
 
-All the simulator plugins of PySimulator are controlled by the same Integrator Control GUI. The Wolfram
+All of the simulator plugins of PySimulator are controlled by the same Integrator Control GUI. The Wolfram
 SystemModeler simulator supports five different numerical integration methods (\textit{DASSL, CVODES,
 Euler, RungeKutta, and Heun}), all the simulation menu options are supported (\textit{error tolerance, fixed step
-size}, etc.) see Figure \ref{fig:pythonintegratorcontrol}.
+size}, etc.), see Figure \ref{fig:pythonintegratorcontrol}.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{python_integrator_control.png}
@@ -551,7 +549,7 @@ can be selected. Depending on the integration algorithms the user can change the
 before running the simulation.
 
 It is also possible to simulate the list of models using the Wolfram plugin. The existing PySimulator interface automatically 
-includes the new plugin to the simulators list for simulating a list of models.
+includes the new plugin in the simulators list for simulating a list of models.
 
 \begin{landscape}
 \begin{figure}
@@ -564,9 +562,9 @@ includes the new plugin to the simulators list for simulating a list of models.
 \section{Summary}
 \label{sec:pythonsummary}
 
-In this chapter, we have introduced an enhanced Python interface for interacting with FMUs and Modelica models for further analysis and post processing of simulation results. We have presented how a modeler can use the Python interface to simulate and access Modelica models using Python objects. The idea behind the developed interface is to provide the modeler with the ability to manipulate and exchange data with Modelica models before and after simulations. A case study of a Modelica model is presented to illustrate the tool’s usage.
+In this chapter, we have introduced an enhanced Python interface for interacting with FMUs and Modelica models for further analysis and post-processing of simulation results. We have presented how a modeler can use the Python interface to simulate and access Modelica models using Python objects. The idea behind this interface is to provide the modeler with the ability to manipulate and exchange data with Modelica models before and after simulations. A case study of a Modelica model is presented to illustrate the tool’s usage.
 
-We have also presented a simulator plugin for commercial simulation engine for Modelica models - the Wolfram SystemModeler within PySimulator. The existing PySimulator interface automatically includes the new plugin to the simulators list for simulating list of models. We have successfully tested by loading all the result files generated from wolfram plugin and verified the results by comparing with several other base line tools. The integration of Wolfram SystemModeler simulator plugin use the regression analysis framework within PySimulator to compare results of the same model generated from SystemModeler with several other tools or different versions of the same model from SystemModeler tool.
+We have also presented a simulator plugin for a commercial simulation engine for Modelica models - the Wolfram SystemModeler within PySimulator. The existing PySimulator interface automatically includes the new plugin in the simulators list for simulating lists of models. We have successfully tested by loading all of the result files generated from the Wolfram plugin and verified the results by comparing with several other base line tools. The integration of the Wolfram SystemModeler simulator plugin uses the regression analysis framework within PySimulator to compare results of the same model generated from SystemModeler with several other tools or different versions of the same model from the SystemModeler tool.
 
 \subsection*{Acknowledgments}
 \label{sec:pythonacknowledgments}
@@ -587,3 +585,4 @@ earlier stage and his implementation of the automatic generation of the simulati
 %%% mode: latex
 %%% TeX-master: "demothesis"
 %%% End: 
+

@@ -23,7 +23,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 
 %%% Change log:
-%% 
+%% Completed Language Reading MBS
 %% 
 %% RCS $Log$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,53 +51,52 @@ This chapter is based on the following paper:
 
 During the last decade, nonlinear model predictive control (NMPC) and non-linear optimal control problems (NOCP)
 based on Differential-Algebraic Equations (DAEs) have had a significant impact in the industrial community, particularly in
-the control engineering area \cite{biegler, tamimi}. State-of-the-art methods are using numerical
+the control engineering area \cite{biegler, tamimi}. State-of-the-art methods use numerical
 algorithms for dynamic optimization based on direct multiple shooting \cite{bock} or collocation algorithms
 \cite{biegler}.
 
-Equation-based, object-oriented modeling languages such as Modelica  have become increasingly used for
-industrial applications. These languages enable users to conveniently model large-scale physical systems described by 
+Use of equation-based, object-oriented modeling languages such as Modelica for
+industrial applications has increased. These languages enable users to conveniently model large-scale physical systems described by 
 differential, algebraic, and discrete equations, primarily with the goal of performing virtual experiments (simulation) 
 on these systems, but recently also optimization.
 
 Due to the influence of such equation-based, object-oriented modeling languages in the industrial community, there have
 been several attempts to integrate tools for such languages with numerical algorithms for optimization. For example,
-Dymola (DassaultSystemes, 2010) supports parameter and design optimization of models written in Modelica whereas
+Dymola (DassaultSystemes, 2010) supports parameter and design optimization of models written in Modelica, whereas
 JModelica.org \cite{akesson} and OpenModelica \cite{bernhard} have native support for optimal
 control.
 
-This chapter presents results of an effort where model-based dynamic optimization has been done by integrating
-OpenModelica and CasADi \cite{casadi}. The problem formulation and modeling is done in Modelica 
+This chapter presents results of an effort in which OpenModelica and CasADi \cite{casadi} have been integrated to perform model-based dynamic optimization. The problem formulation and modeling is done in Modelica 
 (Modelica Association, 2010) including the optimization \cite{optimica} language extension. The integration is based
-on standardized XML format presented in \cite{xml} for exchange of \acrshort{daes}  models. 
+on standardized XML format presented in \cite{xml} for exchange of \acrshort{daes} models. 
 OpenModelica supports export of models written in Modelica and the optimization language extension using this XML 
-format, while CasADi supports import of models represented in this format. This allows users to define optimal control problems (OCP) using
+format, while CasADi supports importing of models represented in this format. This allows users to define optimal control problems (OCP) using
 Modelica and optimization language specification, and solve the underlying model formulation using a
 range of optimization methods, including direct collocation and direct multiple shooting. The proposed
-solution has been tested on several industrially relevant optimal control problems, including a dieselelectric
+solution has been tested on several industrially relevant optimal control problems, including a diesel-electric
 power train.
 
 \section{CasADi}
 \label{sec:optcasadi}
 
-CasADi \cite{casadi} is an open-source framework for C++ and Python for numerical optimization in general and optimal control in particular. The main idea of the tool is to provide users with the ability to easily and efficiently implement optimal control algorithms with a wide range of methods, including multiple shooting and collocation, rather than providing users with a “black-box” OCP solver.
+CasADi \cite{casadi} is an open-source framework for C++ and Python that provides numerical optimization in general and optimal control in particular. The main idea of the tool is to provide users with the ability to easily and efficiently implement optimal control algorithms with a wide range of methods, including multiple shooting and collocation, rather than providing users with a “black-box” OCP solver.
 The tool supports symbolic import of OCPs via an extended version of the functional mockup interface (FMI) format as explained in \cite{optandersson}. This OCP can then be transcribed into a nonlinear programming problem (NLP) using the approach outlined in Section 2.2, and solved with one of CasADi’s interfaced NLP solvers.
 
 \section{Modelica and the Optimization Language Extension}
 \label{sec:optimizationoptimica}
 
-Modelica is a mature and powerful language regarding modeling of complex hybrid dynamical systems. However, it
+Modelica is a mature and powerful language with regard to modeling of complex hybrid dynamical systems. However, it
 lacks important features for describing or modeling optimization problems. This is not a surprise since Modelica
 was not originally designed to help with dynamic optimization problems.
 
-The optimization language extension \cite{optimica} complements Modelica by providing features which enable
+The optimization language extension \cite{optimica} complements Modelica by providing features that enable
 formulation of dynamic optimization problems based on Modelica models. The optimization extension to Modelica
 consists of the following elements:
 
 \begin{itemize}
 	
 \item \textit{objective} and \textit{objectiveIntegerand}, which maps the Mayer and the Lagrange term in 
-             the objective function respectively.
+            the objective function respectively.
 \item \textit{startTime}, which defines the start of the optimization interval.
 \item \textit{finalTime}, which defines the end of the optimization interval.
 \item A new section: \textit{constraint}, which defines inequality constraints.
@@ -109,7 +108,7 @@ The requirement and motivation for introducing these specific features is covere
 \label{sec:optimizationopenmodelica}
 
 The OpenModelica compiler front-end has been extended to support the optimization language extension described in
-Section \ref{sec:optimizationoptimica}. This enable users to formulate and use model-based NOCP using the OpenModelica graphical editor (OMEdit) (see Figure \ref{fig:nocpmodel}) that can be solved by CasADi.
+Section \ref{sec:optimizationoptimica}. This enables users to use the OpenModelica graphical editor (OMEdit) (see Figure \ref{fig:nocpmodel})to formulate and use model-based NOCP that can be solved by CasADi.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{opt_modeling_NOCP.png}
@@ -121,16 +120,16 @@ In addition, the OpenModelica compiler has recently been extended with XML expor
 format defined in \cite{xml}. This schema is an extended version of the XML schema
 defined by the Functional Mock-up Interface (FMI) \cite{fmi}, and is the most recent in a series of
 Modelica-related XML schemas starting with ModelicaXML \cite{pop}.The XML export also includes the
-optimization language extension, and OpenModelica is integrated with CasADi for model-based dynamic optimization reported in this thesis.
+optimization language extension, and OpenModelica is integrated with CasADi for the type of model-based dynamic optimization reported in this thesis.
 
 \section{Complete Model-Based Dynamic Optimization tool-chain}
 \label{sec:optimizationtoolchain}
 
 Before exporting a Modelica and optimization language model to XML, the model should be symbolically
 instantiated by the compiler in order to get a single flat system of equations. The model variables should also be
-scalarized. The compiler frontend performs this, including syntax checking, semantics and type checking, simplification
-and constant evaluation etc. are applied. Then the complete flattened model is exported to XML code. The exported
-XML document can then be imported to CasADi for modelbased dynamic optimization. The complete tool chain is
+scalarized. The compiler front end performs this, including syntax checking, semantics and type checking, simplification
+and constant evaluation, etc. Then the complete flattened model is exported to XML code. The exported
+XML document can then be imported to CasADi for model-based dynamic optimization. The complete tool chain is
 visualized in Figure \ref{fig:optimizationtoolchain}.
 
 \begin{figure}
@@ -146,12 +145,12 @@ NOCP can be reformulated to a NLP as outlined in \cite{alachewoptimization} (See
 At the time of writing, the efficient symbolic pre-processing model evaluation from OpenModelica is not yet completely
 implemented to import into CasADi. So the symbolic preprocessing in CasADi can be used. The symbolic work in CasADi makes it easy to create the goal function and constraints.
 
-The NLP is solved by one of the NLP solvers interfaced to CasADi, e.g. IPOPT \cite{wachter}. First and second order derivative information will be generated by CasADi using automatic differentiation and passed to the solver.
+The NLP is solved by one of the NLP solvers interfaced to CasADi, e.g., IPOPT \cite{wachter}. First and second order derivative information will be generated by CasADi using automatic differentiation and passed to the solver.
 
 \section{Testing the Tool-chain Implementation}
 \label{sec:optimizationtesting}
 
-In this section, we describe the solution of an industrial-relevant optimal control problem of the diesel electric powertrain. The
+In this section, we describe the solution of an industrially-relevant optimal control problem for a diesel-electric powertrain. The
 formulation of the underlying optimization problem and the corresponding optimization results are presented in the
 following subsections.
 
@@ -159,7 +158,7 @@ following subsections.
 \label{sec:optimizationdiesel}
 
 The diesel-electric powertrain model presented in \cite{sivertsson,bernhard} is a nonlinear
-mean value engine model (MVEM) containing four states and three control inputs while the generator model is
+mean value engine model (MVEM) containing four states and three control inputs, while the generator model is
 simplified by considering constant efficiency and maximum power over the entire speed range, see Figure \ref{fig:dieselmodel} for the
 schematic diagram of the model.
 
@@ -169,11 +168,11 @@ schematic diagram of the model.
 	\label{fig:dieselmodel}
 \end{figure}
 
-In a diesel-electric powertrain the operating point of the diesel engine can be freely chosen which would potentially
+In a diesel-electric powertrain the operating point of the diesel engine can be freely chosen, which would potentially
 decrease fuel consumption. Moreover, the electric machine has better torque characteristics. These are the main reasons
-making the diesel-electric power-train concept interesting for further studies.
+that the diesel-electric power-train concept is interesting for further studies.
 
-To investigate the fuel optimal transients of the powertrain from idling condition to a certain power level while the
+To investigate the fuel-optimal transients of the powertrain from idling condition to a certain power level while the
 accelerator pedal position is interpreted as a power level request, the following optimal control problem is solved:
 
 \begin{equation*}
@@ -217,7 +216,7 @@ and boundary conditions are:
  \end{aligned}
 \end{equation*}
 
-The constraints are originated from components’ limitations and the functions $ f_i$  are described in \cite{sivertsson}.
+The constraints are originated from components’ limitations and the functions $ f_i$ are described in \cite{sivertsson}.
 
 \subsection{Model import into CasADi and NLP transcription}
 \label{sec:optimizationxmlimport}
@@ -235,14 +234,14 @@ outlined in \cite{bernhard} of Section 5, and solved with one of CasADi’s inte
 
 The NLP was solved using IPOPT \cite{wachter} running by default with the MUMPS linear solver.
 The right scaling is important for a solution without oscillations.
-On the other hand if the scaling does not work in all steps
-then changing of the solver tolerance is helpful. The dieselmodel
-is by itself well scaling in the time interval[0.32,0.5],
-which is here the critical interval.
+On the other hand, if the scaling does not work in all steps
+then changing of the solver tolerance is helpful. By itself, the diesel model
+scales well in the time interval[0.32,0.5],
+which is the critical interval here.
 
 In order to cover the optimal solution of the diesel-electric
 powertrain model, 140 NLP iterations for 128 sub-intervals
-with the total collocation (Lobatto6 and Radau5) required by
+with the total collocation (Lobatto6 and Radau5) are required by
 IPOPT.
 
 \begin{figure}
@@ -258,8 +257,8 @@ IPOPT.
 \end{figure}
 
 
-better initial guess will change the NLP iterations.
-Table \ref{tab:table1} shows the total CPU time for the optimization. The calculations have been done on Dell Latitude E6410 laptop
+A better initial guess will change the NLP iterations.
+Table \ref{tab:table1} shows the total CPU time for the optimization. The calculations have been done on a Dell Latitude E6410 laptop
 with an Intel Core i7 processor of 2.8 GHz, 8 GB of RAM, 4M Cache, running Windows.
 
 \begin{table}
@@ -276,10 +275,10 @@ with an Intel Core i7 processor of 2.8 GHz, 8 GB of RAM, 4M Cache, running Windo
 \end{center}
 \end{table}
 
-The control and state trajectories of the optimal solutions are shown in Figure \ref{fig:initialguessstatevariables} and Figure \ref{fig:initialguesscontrolvariables} respectively. The problem solved here is a minimum fuel problem for a transient 
+The control and state trajectories of the optimal solutions are shown in Figure \ref{fig:initialguessstatevariables} and Figure \ref{fig:initialguesscontrolvariables}, respectively. The problem solved here is a minimum fuel problem for a transient 
 from idle to 170 kW, for an end time of 0.5 s. For simplicity, only diesel operating condition is assumed which
-means $(u_3=P_{gen} = 0)$. As it is expected, the fuel optimal results happen when engine is accelerated only near the
-end of the time interval $(t\approx 0.32 s)$ to meet the end constraints while minimizing the fuel consumption.
+means $(u_3=P_{gen} = 0)$. As expected, the fuel optimal results happen when the engine is accelerated only near the
+end of the time interval $(t\approx 0.32 s)$, to meet the end constraints while minimizing the fuel consumption.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{opt_result_state_variables.jpg}
@@ -293,7 +292,7 @@ end of the time interval $(t\approx 0.32 s)$ to meet the end constraints while m
 	\label{fig:optimizationresultcontrolvariables}
 \end{figure}
 
-Amendments to the initial values, the process is robust. For this purpose, the initial values are changed slightly.
+With amendments to the initial values, the process is robust. For this purpose, the initial values are changed slightly.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{opt_result_state_variables_changed.jpg}
@@ -310,9 +309,9 @@ Amendments to the initial values, the process is robust. For this purpose, the i
 \section{Summary}
 \label{sec:optimizationsummary}
 
-This chapter demonstrates simulation-based  optimization through the coupling of two open source tools: OpenModelica, which is a Modelica-based modeling and simulation platform, and CasADi, a framework for numerical optimization. The coupling uses a standardized XML format for exchange of
+This chapter demonstrates simulation-based optimization through the coupling of two open-source tools: OpenModelica, which is a Modelica-based modeling and simulation platform, and CasADi, a framework for numerical optimization. The coupling uses a standardized XML format for exchange of
 differential-algebraic equations (DAE) models. OpenModelica supports export of models written in Modelica and the optimization language extension using this XML format, while CasADi supports import of models represented in this format. This allows users to define optimal control problems (OCP) using
-Modelica and optimization language specification, and solve the underlying model formulation using a range of optimization methods, including direct collocation and direct multiple shooting. The proposed solution has been tested on several industrially relevant optimal control problems, including a dieselelectric power train.
+Modelica and optimization language specification, and to solve the underlying model formulation using a range of optimization methods, including direct collocation and direct multiple shooting. The proposed solution has been tested on several industrially-relevant optimal control problems, including a diesel-electric power train.
 
 \subsection*{Acknowledgements}
 \label{sec:optimizationacknowledgements}
@@ -336,3 +335,4 @@ ERC ST HIGHWIND (259 166), Eurostars SMART, vicerp, ACCM.
 %%% mode: latex
 %%% TeX-master: "demothesis"
 %%% End: 
+
