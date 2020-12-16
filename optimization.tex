@@ -62,12 +62,12 @@ on these systems, but recently also optimization.
 
 Due to the influence of such equation-based, object-oriented modeling languages in the industrial community, there have
 been several attempts to integrate tools for such languages with numerical algorithms for optimization. For example,
-Dymola (DassaultSystemes, 2010) supports parameter and design optimization of models written in Modelica, whereas
+Dymola \cite{dymola} supports parameter and design optimization of models written in Modelica, whereas
 JModelica.org \cite{akesson} and OpenModelica \cite{bernhard} have native support for optimal
 control.
 
 This chapter presents results of an effort in which OpenModelica and CasADi \cite{casadi} have been integrated to perform model-based dynamic optimization. The problem formulation and modeling is done in Modelica 
-(Modelica Association, 2010) including the optimization \cite{optimica} language extension. The integration is based
+including the optimization \cite{optimica} language extension. The integration is based
 on standardized XML format presented in \cite{xml} for exchange of \acrshort{daes} models. 
 OpenModelica supports export of models written in Modelica and the optimization language extension using this XML 
 format, while CasADi supports importing of models represented in this format. This allows users to define optimal control problems (OCP) using
@@ -80,7 +80,7 @@ power train.
 \label{sec:optcasadi}
 
 CasADi \cite{casadi} is an open-source framework for C++ and Python that provides numerical optimization in general and optimal control in particular. The main idea of the tool is to provide users with the ability to easily and efficiently implement optimal control algorithms with a wide range of methods, including multiple shooting and collocation, rather than providing users with a “black-box” OCP solver.
-The tool supports symbolic import of OCPs via an extended version of the functional mockup interface (FMI) format as explained in \cite{optandersson}. This OCP can then be transcribed into a nonlinear programming problem (NLP) using the approach outlined in Section 2.2, and solved with one of CasADi’s interfaced NLP solvers.
+The tool supports symbolic import of OCPs via an extended version of the functional mockup interface (FMI) format as explained in \cite{optandersson}. This OCP can then be transcribed into a nonlinear programming problem (NLP) and solved with one of CasADi’s interfaced NLP solvers.
 
 \section{Modelica and the Optimization Language Extension}
 \label{sec:optimizationoptimica}
@@ -108,18 +108,19 @@ The requirement and motivation for introducing these specific features is covere
 \label{sec:optimizationopenmodelica}
 
 The OpenModelica compiler front-end has been extended to support the optimization language extension described in
-Section \ref{sec:optimizationoptimica}. This enables users to use the OpenModelica graphical editor (OMEdit) (see Figure \ref{fig:nocpmodel})to formulate and use model-based NOCP that can be solved by CasADi.
+Section \ref{sec:optimizationoptimica}. 
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{opt_modeling_NOCP.png}
 	\caption{Modeling NOCP using the OpenModelica Graphical and Textual Editor.}
 	\label{fig:nocpmodel}
 \end{figure}
 
+This enables users to use the OpenModelica graphical editor (OMEdit) (see Figure \ref{fig:nocpmodel})to formulate and use model-based NOCP that can be solved by CasADi.
 In addition, the OpenModelica compiler has recently been extended with XML export of models \cite{alachew} based on the XML
 format defined in \cite{xml}. This schema is an extended version of the XML schema
 defined by the Functional Mock-up Interface (FMI) \cite{fmi}, and is the most recent in a series of
-Modelica-related XML schemas starting with ModelicaXML \cite{pop}.The XML export also includes the
+Modelica-related XML schemas starting with ModelicaXML \cite{pop}. The XML export also includes the
 optimization language extension, and OpenModelica is integrated with CasADi for the type of model-based dynamic optimization reported in this thesis.
 
 \section{Complete Model-Based Dynamic Optimization tool-chain}
@@ -132,7 +133,8 @@ and constant evaluation, etc. Then the complete flattened model is exported to X
 XML document can then be imported to CasADi for model-based dynamic optimization. The complete tool chain is
 visualized in Figure \ref{fig:optimizationtoolchain}.
 
-\begin{figure}
+
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{opt_tool_chain.png}
 	\caption{Model-Based Dynamic Optimization tool-chain for OpenModelica and CasADi.}
 	\label{fig:optimizationtoolchain}
@@ -142,7 +144,7 @@ The XML will be imported and symbolically pre-processed in CasADi. In particular
 Modelica is reformulated in a semi-explicit form. With the NOCP now available in CasADi’s native data structures, the
 NOCP can be reformulated to a NLP as outlined in \cite{alachewoptimization} (See Section 2.2).
 
-At the time of writing, the efficient symbolic pre-processing model evaluation from OpenModelica is not yet completely
+At the time of our work, the efficient symbolic pre-processing model evaluation from OpenModelica is not yet completely
 implemented to import into CasADi. So the symbolic preprocessing in CasADi can be used. The symbolic work in CasADi makes it easy to create the goal function and constraints.
 
 The NLP is solved by one of the NLP solvers interfaced to CasADi, e.g., IPOPT \cite{wachter}. First and second order derivative information will be generated by CasADi using automatic differentiation and passed to the solver.
@@ -162,7 +164,7 @@ mean value engine model (MVEM) containing four states and three control inputs, 
 simplified by considering constant efficiency and maximum power over the entire speed range, see Figure \ref{fig:dieselmodel} for the
 schematic diagram of the model.
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{opt_diesel_model.png}
 	\caption{Diagram of the diesel-electric powertrain model.}
 	\label{fig:dieselmodel}
@@ -236,7 +238,7 @@ The NLP was solved using IPOPT \cite{wachter} running by default with the MUMPS 
 The right scaling is important for a solution without oscillations.
 On the other hand, if the scaling does not work in all steps
 then changing of the solver tolerance is helpful. By itself, the diesel model
-scales well in the time interval[0.32,0.5],
+scales well in the time interval [0.32, 0.5],
 which is the critical interval here.
 
 In order to cover the optimal solution of the diesel-electric
@@ -244,24 +246,11 @@ powertrain model, 140 NLP iterations for 128 sub-intervals
 with the total collocation (Lobatto6 and Radau5) are required by
 IPOPT.
 
-\begin{figure}
-	\includegraphics[width=\linewidth]{opt_initial_guess_state_variables.jpg}
-	\caption{Initial guess for diesel model - state variables.}
-	\label{fig:initialguessstatevariables}
-\end{figure}
-
-\begin{figure}
-	\includegraphics[width=\linewidth]{opt_initial_guess_control_variables.jpg}
-	\caption{Initial guess for diesel model - control variables.}
-	\label{fig:initialguesscontrolvariables}
-\end{figure}
-
-
 A better initial guess will change the NLP iterations.
 Table \ref{tab:table1} shows the total CPU time for the optimization. The calculations have been done on a Dell Latitude E6410 laptop
 with an Intel Core i7 processor of 2.8 GHz, 8 GB of RAM, 4M Cache, running Windows.
 
-\begin{table}
+\begin{table} [!h]
 \begin{center}
 	\caption{Execution times for the diesel-electric powertrain model.} 
 	\label{tab:table1} 
@@ -275,37 +264,52 @@ with an Intel Core i7 processor of 2.8 GHz, 8 GB of RAM, 4M Cache, running Windo
 \end{center}
 \end{table}
 
-The control and state trajectories of the optimal solutions are shown in Figure \ref{fig:initialguessstatevariables} and Figure \ref{fig:initialguesscontrolvariables}, respectively. The problem solved here is a minimum fuel problem for a transient 
-from idle to 170 kW, for an end time of 0.5 s. For simplicity, only diesel operating condition is assumed which
+The control and state trajectories of the optimal solutions are shown in Figure \ref{fig:optimizationresultstatevariables} and Figure \ref{fig:optimizationresultcontrolvariables}, respectively. 
+
+%%% \begin{figure} [!h]
+%%%	\includegraphics[width=\linewidth]{opt_initial_guess_state_variables.jpg}
+%%%	\caption{Initial guess for diesel model - state variables.}
+%%%	\label{fig:initialguessstatevariables}
+%%% \end{figure}
+
+%%% \begin{figure} [!h]
+%%%	\includegraphics[width=\linewidth]{opt_initial_guess_control_variables.jpg}
+%%%	\caption{Initial guess for diesel model - control variables.}
+%%%	\label{fig:initialguesscontrolvariables}
+%%% \end{figure}
+
+The problem solved here is a minimum fuel problem for a transient from idle to 170 kW, for an end time of 0.5 s. For simplicity, only diesel operating condition is assumed which
 means $(u_3=P_{gen} = 0)$. As expected, the fuel optimal results happen when the engine is accelerated only near the
 end of the time interval $(t\approx 0.32 s)$, to meet the end constraints while minimizing the fuel consumption.
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{opt_result_state_variables.jpg}
 	\caption{Optimization result for diesel model - state variables.}
 	\label{fig:optimizationresultstatevariables}
 \end{figure}
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{opt_result_control_variables.jpg}
 	\caption{Optimization result for diesel model - control variables.}
 	\label{fig:optimizationresultcontrolvariables}
 \end{figure}
 
+\clearpage
 With amendments to the initial values, the process is robust. For this purpose, the initial values are changed slightly.
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{opt_result_state_variables_changed.jpg}
 	\caption{Optimization result for diesel model with changed initial values - state variables.}
 	\label{fig:optimizationresultchangedstatevariables}
 \end{figure}
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{opt_result_control_variables_changed.jpg}
 	\caption{Optimization result for diesel model with changed initial values - control variables.}
 	\label{fig:optimizationresultchangedcontrolvariables}
 \end{figure}
 
+\clearpage
 \section{Summary}
 \label{sec:optimizationsummary}
 

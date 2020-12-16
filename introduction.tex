@@ -107,7 +107,7 @@ To answer the research question, we pursue five specific objectives:
 
 \end{itemize}
 
-With our solution, we address the following properties: openness, generality, model portability, tool interoperability, model integration, model reusability, model evolution, and model maintenance.
+With our solution, we address the following properties: openness, generality, tool interoperability, model integration, model reusability, model evolution, and model maintenance.
 
 \section{Contributions}
 \label{sec:Contributions}
@@ -131,7 +131,8 @@ The work presented in this thesis makes the following primary contributions towa
 \label{sec:List of Publication}
 
 
-The work presented in this thesis is based on the following publications:
+The work presented in this thesis is based on the publications listed below.
+For each paper, we summarize the contribution of each author and we use the author (I) to denote Alachew Mengist, the author of this thesis.
 
 
 \begin{itemize}
@@ -140,14 +141,31 @@ The work presented in this thesis is based on the following publications:
 
 \item[\begin{NoHyper} \cite{alachewoptimizationdemo} \end{NoHyper}] \textbf{Alachew Shitahun}, Vitalij Ruge, Mahder Gebremedhin, Bernhard Bachmann, Lars Eriksson, Joel Andersson, Moritz Diehl, Peter Fritzson. \textbf{Tool Demonstration Abstract: OpenModelica and CasADi for Model-Based Dynamic Optimization.} In Proceedings of the 5th International Workshop on Equation-Based Object-Oriented Modeling Languages and Tools, Nottingham, UK, April 19, 2013. 
 
+\item[--] The author carried out the design, development, and validation of the work to support export of models written in Modelica and the optimization language extension using the XML format for model exchange and simulation. Mahder Gebremedhin developed the optimization langauge extension. Vitalij Ruge wrote a Python scripts to import the XMl to CasADi, and wrote the text on Nonlinear Optimal Control Problems (NOCP) on the actual paper. Lars Eriksson provided an industrial-relevant optimal control problem of the diesel electric powertrain model for validation.The author and Vitalij Ruge carried out the validation of the tool chain. I took the lead in writing the manuscript. Discussions and proofreading by co-authors.
+
 \item[ \begin{NoHyper} \cite{alachewompython} \end{NoHyper}] Bernt Lie, Sudeep Bajracharya, \textbf{Alachew Mengist}, Lena Buffoni, Arun Kumar, Martin Sj\"{o}lund, Adeel Asghar, Adrian Pop, Peter Fritzson.\textbf{ API for Accessing OpenModelica Models From Python.} In Proceedings of 9th EUROSIM Congress on Modeling and Simulation, September 12-16, 2016, Oulu, Finland. 
 
+
+\item[--] Bent Lie proposed a Python API for controlling Modelica simulation and analysis from Python. I supervised the master thesis student Sudeep Bajracharya to implement based on the proposal and give pointers to the development based on my previous work presented in \cite{alachewpysimulator} . The author carried out the validation of the development and revise the manuscript, and co-authored the actual paper.
+
+
 \item[\begin{NoHyper} \cite{alachewpysimulator} \end{NoHyper}] Adeel Asghar, Andreas Pfeiffer, Arunkumar Palanisamy, \textbf{Alachew Mengist}, Martin Sj\"{o}lund, Adrian Pop and Peter Fritzson.\textbf{ Automatic Regression Testing of Simulation Models and Concept for Simulation of Connected FMUs in PySimulator.} In Proceedings of the 11th International Modelica Conference, Versailles, France, September 21-23, 2015. 
+
+
+\item[--]This paper consists of three modules and only one of the module, the simulator plugin for Wolfram SystemModeler in PySimulator, presented in this thesis. The author carried out the design, development and validation of the work, and contributed to the writing of the manuscript. Discussions, validation, and proofreading by co-authors.
+
 
 \item[\begin{NoHyper} \cite{alachewtlm} \end{NoHyper}] \textbf{Alachew Mengist}, Adeel Asghar, Adrian Pop, Peter Fritzson, Willi Braun, Alexander Siemers and Dag Fritzson.\textbf{ An Open-Source Graphical Composite Modeling Editor and Simulation Tool Based on FMI and TLM Co-Simulation.} In Proceedings of the 11th International Modelica Conference, Versailles, France, September 21-23, 2015. 
 
 
+\item[--]The author together with Adeel Asghar conducted the design, development, and validation of the work. Willi Braun performed runtime enhancement to support single solver step simulation. I took the lead in writing the manuscript. Peter Fritzson contributed to the final version of the manuscript and improved further the paper. All authors provided critical feedback and helped shape the research and manuscript. Discussions, validation, and proofreading by co-authors.
+
+
 \item[\begin{NoHyper} \cite{alachewtraceability} \end{NoHyper}] \textbf{Alachew Mengist}, Adrian Pop, Adeel Asghar, Peter Fritzson. \textbf{Traceability Support in OpenModelica Using Open Services for Lifecycle Collaboration (OSLC).} In Proceedings of the 12th International Modelica Conference, Prague, Czech Republic, May 15-17, 2017. 
+
+
+\item[--]The author carried out the design, development, and validation of the work. Adrian Pop supervised the project. I took the lead in writing the manuscript. Discussions and proofreading by co-authors. Validation of the tool chain by Christian König and the author.
+
 
 \item[\begin{NoHyper} \cite{alachewrequirementstraceability} \end{NoHyper}] Lena Buffoni, Adrian Pop, \textbf{Alachew Mengist}. \textbf{Traceability and impact analysis in requirement verification.} In Proceedings of the 8th International Workshop on Equation-Based Object-Oriented Modeling Languages and Tools, Munich, Germany, December 1, 2017. 
 
@@ -177,7 +195,7 @@ The thesis is organized as follows:
 
 \end{description}
 
-The thesis also contains an appendix in which we provide parts of contributions for standardizing the structure and validation constraints of composite modeling and traceability information.
+
 
 %\nocite{scigen}
 %We have included Paper \ref{art:scigen}

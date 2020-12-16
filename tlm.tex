@@ -105,28 +105,31 @@ In order to use graphical notations in the composite model editor, the composite
 
 <Annotation Origin="{-50,54}" Extent="{-10,-10,10,10}" Rotation="0" Visible="true"/>
 
-The contents of our composite model \acrshort{xml} root element, namely \textit{Model} is depicted in Figure \ref{fig:tlmerootelement}. The root element can contain a list of connected \textit{SubModels} and TLM \textit{Connections}. \textit{SimulationParams} element is also inside the root element. It has an attribute \textit{Name} representing the name of the composite model.
+The contents of our composite model \acrshort{xml} root element, namely \textit{Model} is depicted in Figure \ref{fig:tlmerootelement}.
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{tlm_root_element.png}
 	\caption{The Model (root) element of the Composite Model Schema.}
 	\label{fig:tlmerootelement}
 \end{figure}
+ 
 
+The root element can contain a list of connected \textit{SubModels} and TLM \textit{Connections}. \textit{SimulationParams} element is also inside the root element. 
+It has an attribute \textit{Name} representing the name of the composite model. The \textit{SimulationParams} element specifies the start time and end time for the co-simulation.
 
-The \textit{SimulationParams} element specifies the start time and end time for the co-simulation.
+The \textit{SubModel} element, presented in Figure \ref{fig:tlmsubmodelelement}, represents the simulation model component that participates in the co-simulation. 
 
-The \textit{SubModel} element, presented in Figure \ref{fig:tlmsubmodelelement}, represents the simulation model component that participates in the co-simulation. The required attributes for a \textit{SubModel} are \textit{Name} of the sub-model, \textit{ModelFile} (file name of the submodel), and \textit{StartCommand} (the start method command to participate in the co-simulation). Each \textit{SubModel} also contains a list of interface points. \textit{InterfacePoint} elements are used to specify the \acrshort{tlm} interfaces of each simulation component (sub-model). 
-
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{tlm_submodel_element.png}
 	\caption{The SubModel element from the Composite Model Schema.}
 	\label{fig:tlmsubmodelelement}
 \end{figure}
 
+The required attributes for a \textit{SubModel} are \textit{Name} of the sub-model, \textit{ModelFile} (file name of the submodel), and \textit{StartCommand} (the start method command to participate in the co-simulation). Each \textit{SubModel} also contains a list of interface points. \textit{InterfacePoint} elements are used to specify the \acrshort{tlm} interfaces of each simulation component (sub-model). 
+
 The \textit{Connection} element of the composite model \acrshort{xml} schema is shown in Figure \ref{fig:tlmconnectionelement}.
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{tlm_connection_element.png}
 	\caption{The Connection element from the Composite Model Schema.}
 	\label{fig:tlmconnectionelement}
@@ -138,33 +141,35 @@ a connection between two TLM interfaces. Its attributes \textit{From} and \texti
 \section{Composite Model Graphical Editor}
 \label{sec:tlmeditor}
 
-One of the primary contributions of this effort is our focus on interoperability in modeling and simulation.
-Our effort leverages OpenModelica for graphical composite model editing as well as SKF’s co-simulation framework for TLM-based co-simulation. The implementation of this graphical composite model editor is an extension of OMEdit, which is implemented in C++ using the Qt graphical user interface library.
+One of the primary contributions of the composite model editor is interoperability in modeling and simulation.
+Our effort leverages OpenModelica for graphical composite model editing as well as SKF’s co-simulation framework for TLM-based co-simulation.
+The implementation is an extension of OMEdit, which is implemented in C++ using the Qt graphical user interface library.
 
-The full graphical functionality of the composite modeling process can be expressed in the following steps:
+An overview of the different components that the graphical composite model editor relies on is shown in Figure \ref{fig:tlmeditorinteraction}.
 
-\begin{enumerate}
-	
-\item Import and add the external models to the composite model editor,
-\item Specify startup methods and interfaces of the external model,
-\item Build the composite models by connecting the external models,
-\item Set the co-simulation and TLM parameters in the composite model.
-
-\end{enumerate}
-
-An overview of the different components that the graphical composite model editor relies on is shown in Figure \ref{fig:tlmeditorinteraction}. 
-
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{tlm_editor_interaction.png}
 	\caption{An overview of the interaction between the composite model (meta-model) graphic editor and the other components.}
 	\label{fig:tlmeditorinteraction}
 \end{figure}
 
-The graphical composite model editor communicates with the OpenModelica compiler to
-retrieve the interface points for the external model and SKF’s co-simulation framework to run the \acrshort{tlm} simulation manager and simulation monitor. Each tool component is described in the following subsections.
+The graphical composite model editor communicates with the OpenModelica compiler to retrieve the interface points for the external model and SKF’s co-simulation framework
+to run the \acrshort{tlm} simulation manager and simulation monitor.
+ 
+The full graphical functionality of the composite modeling process can be expressed in the following steps:
+
+\begin{enumerate}
+	
+	\item Import and add the external models to the composite model editor,
+	\item Specify startup methods and interfaces of the external model,
+	\item Build the composite models by connecting the external models,
+	\item Set the co-simulation and TLM parameters in the composite model.
+	
+\end{enumerate}
 
 In the graphic composite model editor, the modeling page area is used for visual composite modeling or text
-composite modeling. This allows users to create, modify, and delete sub-models in a user-friendly manner. 
+composite modeling. This allows users to create, modify, and delete sub-models in a user-friendly manner.
+Each tool component is described in the following subsections. 
 
 \subsection{Visual Modeling}
 \label{sec:tlmvisual}
@@ -174,7 +179,7 @@ model component (sub-model) of the \acrshort{tlm} co-simulation can be dragged a
 
 \begin{landscape}
 \begin{figure}
-	\includegraphics[width=\linewidth]{test_tlm.png}
+	\includegraphics[width=\linewidth,height=11cm]{test_tlm.png}
 	\caption{A screenshot of visual composite modeling of a double pendulum.}
 	\label{fig:tlmtest}
 \end{figure}
@@ -188,7 +193,7 @@ The test model (see Figure \ref{fig:tlmtest}) is a multibody system that consist
 \subsection{Textual Modeling and Viewing}
 \label{sec:tlmtextual}
 
-The text view (see Figure 8 \ref{fig:tlmtextview}) allows users to view the contents (sub-models, connections, and simulation
+The text view (see Figure \ref{fig:tlmtextview}) allows users to view the contents (sub-models, connections, and simulation
 parameters) of any loaded composite model. It also enables users to edit a composite model textually as
 part of the composite modeling construction process. To facilitate the process of textual composite modeling
 and to provide users with a starting point, the text view (see Figure \ref{fig:tlmtextview}) includes the composite model \acrshort{xml}
@@ -224,46 +229,55 @@ functionality supports single solver step simulation so that the executed simula
 with the \acrshort{tlm} manager. New flags to enable this functionality in the simulation executable are now available:
 
 \begin{itemize}
-		
-\item -noEquidistantOutputFrequency
-\item -noEquidistantOutputTime
-
+	
+	\item -noEquidistantOutputFrequency
+	\item -noEquidistantOutputTime
+	
 \end{itemize}
 
 The new flags control the output, e.g., the frequency of
 steps and the time increment. 
 
+\clearpage
 \subsection{Communication with the SKF TLM-Based Co-Simulation Framework}
 \label{sec:tlmskf}
 
 The graphic composite model editor in OpenModelica
 provides a graphical user interface for co-simulation of
 composite models. It can be launched by clicking the
-\acrshort{tlm} co-simulation icon from the toolbar, see
-Figure \ref{fig:tlmsetup}.
+\acrshort{tlm} co-simulation icon from the toolbar.
 
-\begin{figure}
-	\includegraphics[width=\linewidth]{tlm_setup.png}
-	\caption{TLM co-simulation setup.}
-	\label{fig:tlmsetup}
-\end{figure}
+%%% , see
+%%% Figure \ref{fig:tlmsetup}.
+
+%%% \begin{figure} [!h]
+%%%	\centering
+%%%	\includegraphics[width=\linewidth]{tlm_setup.png}
+%%%	\caption{TLM co-simulation setup.}
+%%%	\label{fig:tlmsetup}
+%%%\end{figure}
 
 The editor runs the \acrshort{tlm} simulation manager and simulation monitor. The simulation manager reads the
 composite model from the editor, starts the co-simulation, and provides the communication bridge
 between the running simulations. Figure \ref{fig:tlmcosimulationprogress} shows the running status of the \acrshort{tlm} co-simulation.
 
-\begin{figure}
+
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{tlm_cosimulation_progress.png}
 	\caption{TLM co-simulation.}
 	\label{fig:tlmcosimulationprogress}
 \end{figure}
 
-The simulation monitor communicates with the simulation manager and writes the status and progress of the co-simulation to a file. This file is read by the editor, which uses the data to show the co-simulation progress bar to the user. The editor also provides the means of reading the log files generated by the simulation manager and monitor.
+The simulation monitor communicates with the simulation manager and writes the status and progress of the co-simulation to a file. 
+This file is read by the editor, which uses the data to show the co-simulation progress bar to the user. 
+The editor also provides the means of reading the log files generated by the simulation manager and monitor.
 
+\clearpage
 During the post-processing stage, simulation results are collected and visualized in the OMEdit 
 plotting perspective, as shown in Figure \ref{fig:tlmsimulationresults}.
  
-\begin{figure}
+
+\begin{figure} [!h] 
 	\includegraphics[width=\linewidth]{tlm_simulation_results.png}
 	\caption{Results of TLM co-simulation.}
 	\label{fig:tlmsimulationresults}
@@ -275,10 +289,11 @@ plotting perspective, as shown in Figure \ref{fig:tlmsimulationresults}.
 
 SKF has successfully used the \acrshort{tlm} co-simulation framework to simulate composite models. For
 example, Figure \ref{fig:tlmapplication} shows one such application with an MSC.ADAMS \cite{adams} car model
-containing an integrated SKF BEAST\cite{beast} hub-unit sub-model 
+containing an integrated SKF BEAST \cite{beast} hub-unit sub-model 
 connected via \acrshort{tlm}-connections.
 
-\begin{figure}
+\clearpage
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{tlm_application.png}
 	\caption{A composite model of an MSC.ADAMS car model with an integrated SKF BEAST hub-unit sub-model (green), connected 
 		     via TLM connections for co-simulation.}

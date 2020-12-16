@@ -727,9 +727,9 @@
      Linköping universitet\\
      581 83 Linköping
      }{%
-       Linköping University\\
        \@departmentenglish\\
-       \@division\\
+       Linköping University\\
+       %\@division\\
        SE-581 83 Linköping, Sweden\\
      }
     \vspace*{5mm}
@@ -804,7 +804,7 @@
   \fi
   \vfill
   \begin{flushleft}
-    Edition \@edition\\[5mm]
+    % Edition \@edition\\[5mm]
     \copyright{} \@author, \@publicationyear\\
     ISBN \@isbn\\
     ISSN \@issn\\

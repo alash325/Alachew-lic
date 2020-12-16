@@ -67,7 +67,7 @@ how to use the constructor to instantiate an object. The object is imported from
 Python commands.
 
 \begin{lstlisting}
-  >>>from OMPython import ModelicaSystem
+  >>> from OMPython import ModelicaSystem
 \end{lstlisting}
 
 Other Python packages to be used, such as \textit{numpy},\textit{matplotlib}, \textit{pandas}, etc. must be imported in a similar
@@ -86,26 +86,26 @@ Example 1: Use of constructor. Suppose we have a Modelica model with name CSTR w
 \textit{Reactor.mo}:
 
 \begin{lstlisting}
-package Reactors
-	// ...
-	model CSTR
-		/// ...
-	end CSTR;
-	//
-end Reactors;
+  package Reactors
+   // ...
+   model CSTR
+   /// ...
+   end CSTR;
+   //
+  end Reactors;
 \end{lstlisting}
 
 If this model does not use any external Modelica code and the file is located in the current Python directory, the following
 Python code instantiates a Python object \textit{mod}:
 
 \begin{lstlisting}
->>> mod = ModelicaSystem('Reactors.mo','Reactors.CSTR')
+  >>> mod = ModelicaSystem('Reactors.mo','Reactors.CSTR')
 \end{lstlisting}
 
 The user is free to choose any valid Python label name for the Python object. All methods of class \textit{ModelicaSystem} refers to the instantiated object, in standard Python fashion. Thus, method \textit{simulate()} is invoked with the Python command:
 
 \begin{lstlisting}
->>>mod.simulate()
+  >>> mod.simulate()
 \end{lstlisting}
 
 In the subsequent overview of methods, the object name is not included. In practice, of course, it must be included in order
@@ -205,8 +205,10 @@ file extension \textit{.fmu}.
 We consider the simple tank in Figure \ref{fig:pythonwatertankmodel} filled with water. Water with initial mass $m(0)$ is emptied by gravity
 through a hole in the bottom at effluent mass flow rate $\dot{m}_e$, while at the same time water is filled into the tank at influent mass flow rate $\dot{m}_i$.
 
-\begin{figure}
-	\includegraphics[width=\linewidth]{python_water_tank_model.png}
+\clearpage
+\begin{figure} [!h]
+	\centering
+	\includegraphics[width=0.4\linewidth, height=0.3\textheight]{python_water_tank_model.png}
 	\caption{Driven water tank, with externally available quantities framed	in red: initial mass is emptied through bottom at rate $\dot{m}_e $, while at the same time water enters the tank at rate $\dot{m}_i$ }
 	\label{fig:pythonwatertankmodel}
 \end{figure}
@@ -214,8 +216,9 @@ through a hole in the bottom at effluent mass flow rate $\dot{m}_e$, while at th
 Our modeling objective is to find the liquid level h. This objective is illustrated by the functional diagram in
 Figure \ref{fig:pythonwatertankfunctional}. The functional diagram depicts the causality of the system (“Tank with influent and effluent mass flow”), where inputs (green arrow) cause a change in the system and its output (orange arrow)\footnote{Although Modelica is an acausal modeling language, it is useful to think in terms of causality during model development.}. Here, the input variable is the influent mass flow rate $\dot{m}_i$, while the output variable is the quantity we are interested in, $h$.
 
-\begin{figure}
-	\includegraphics[width=\linewidth]{python_water_tank_functional.png}
+\begin{figure} [!h] 
+	\centering
+	\includegraphics[width=0.5\linewidth, height=0.2\textheight]{python_water_tank_functional.png}
 	\caption{Functional diagram of tank with influent and effluent flow.}
 	\label{fig:pythonwatertankfunctional}
 \end{figure}
@@ -225,7 +228,8 @@ Figure \ref{fig:pythonwatertankfunctional}. The functional diagram depicts the c
 
 The model can be summarized in a form suitable for implementation in Modelica as:
 
-\begin{equation*}
+\clearpage
+\begin{equation*} 
 	\begin{aligned}
 	    \frac{d_m}{d_t} = \dot{m}_i - \dot{m}_e \\
 	     m = pV \\
@@ -237,7 +241,7 @@ The model can be summarized in a form suitable for implementation in Modelica as
 To complete the model description, we need to specify model parameters and operating conditions. Model parameters
 (constants) are given in Table \ref{tab:tablemodelparameters}, and the operating conditions are given in Table \ref{tab:tablemodeloperatingconditions}.
 
-\begin{table}
+\begin{table} [!h]
 	\begin{center}
 		\caption{Parameters for driven tank with constant cross sectional area.} 
 		\label{tab:tablemodelparameters} 
@@ -253,7 +257,7 @@ To complete the model description, we need to specify model parameters and opera
 	\end{center}
 \end{table}
 
-\begin{table}
+\begin{table} [!h]
 	\begin{center}
 		\caption{Operating condition for driven tank with constant cross sectional area.} 
 		\label{tab:tablemodeloperatingconditions} 
@@ -275,40 +279,40 @@ The Modelica code describes the core model of the tank, \textit{ModWaterTank}, a
 constants and variables are specified, and a second section where the model equations are specified.
 
 \begin{lstlisting}
-	model ModWaterTank 
-		// Main driven water tank model 
-		// author: Bernt Lie 
-		// University College of 
-		// Southeast Norway 
-		// April 18, 2016 
-		//
-		// Parameters
-		constant Real rho = 1 "Density";
-		parameter Real A = 5 "Tank area";
-		parameter Real K = 5 "Valve const";
-		parameter Real h\_max = 3 "Scaling";
-		// Initial state parameters
-		parameter Real h\_0 = 1.5 "Init.level";
-		parameter Real m\_0 = rho*h\_0*A "Init.mass";
-		// Declaring variables
-		// -- states
-		Real m(start = m\_0, fixed = true) "Mass in tank, kg";
-		// -- auxiliary variables
-		Real V "Tank liquid volume, L";
-		Real md\_e "Effluent mass flow";
-		// -- input variables
-		input Real md\_i "Influent mass flow";
-		// -- output variables 
-		output Real h "Tank liquid level,dm";
-		// Equations constituting the model 
-		equation 
-		// Differential equation 
-		der(m) = md\_i - md\_e; 
-		// Algebraic equations 
-		m = rho*V; 
-		V = A*h;
-		md\_e = K*sqrt(h/h\_max);
-	end ModWaterTank;
+  model ModWaterTank 
+    // Main driven water tank model 
+    // author: Bernt Lie 
+    // University College of 
+    // Southeast Norway 
+    // April 18, 2016 
+    //
+    // Parameters
+    constant Real rho = 1 "Density";
+    parameter Real A = 5 "Tank area";
+    parameter Real K = 5 "Valve const";
+    parameter Real h\_max = 3 "Scaling";
+    // Initial state parameters
+    parameter Real h\_0 = 1.5 "Init.level";
+    parameter Real m\_0 = rho*h\_0*A "Init.mass";
+    // Declaring variables
+    // -- states
+    Real m(start = m\_0, fixed = true)"Mass in tank, kg" ;
+    // -- auxiliary variables
+    Real V "Tank liquid volume, L";
+    Real md\_e "Effluent mass flow";
+    // -- input variables
+    input Real md\_i "Influent mass flow";
+    // -- output variables 
+    output Real h "Tank liquid level,dm";
+    // Equations constituting the model 
+  equation 
+    // Differential equation 
+    der(m) = md\_i - md\_e; 
+    // Algebraic equations 
+    m = rho*V; 
+    V = A*h;
+    md\_e = K*sqrt(h/h\_max);
+  end ModWaterTank;
 \end{lstlisting}
 
 As seen from the first section of model \textit{ModWaterTank}, the model has 4 essential parameters
@@ -331,21 +335,21 @@ given in Section \ref{subsec:pythonmodelsummary}. For purposes of illustration, 
 
 
 \begin{lstlisting}
-	package WaterTank
-		// Package for simulating
-		// driven water tank
-		// author: Bernt Lie
-		// University College of
-		// Southeast Norway
-		// April 18, 2016
-		//
-		model ModWaterTank
-		// Main driven water tank model
-		// ....
-		....
-		end ModWaterTank;
-		// End package
-	end WaterTank;
+  package WaterTank
+    // Package for simulating
+    // driven water tank
+    // author: Bernt Lie
+    // University College of
+    // Southeast Norway
+    // April 18, 2016
+    //
+    model ModWaterTank
+    // Main driven water tank model
+    // ....
+    ....
+    end ModWaterTank;
+    // End package
+  end WaterTank;
 \end{lstlisting}
 
 \subsection{Use of Python API}
@@ -354,13 +358,13 @@ given in Section \ref{subsec:pythonmodelsummary}. For purposes of illustration, 
 First, for example on Jupyter notebook, the following Python statements are executed:
 
 \begin{lstlisting}
-	from OMPython import ModelicaSystem
-	import numpy as np
-	import numpy.random as nr
-	%matplotlib inline
-	import matplotlib.pyplot as plt
-	import pandas as pd
-	LW = 2
+  from OMPython import ModelicaSystem
+  import numpy as np
+  import numpy.random as nr
+  %matplotlib inline
+  import matplotlib.pyplot as plt
+  import pandas as pd
+  LW = 2
 \end{lstlisting}
 
 Here, we use \textit{NumPy} to handle simulation results, etc. The random number package will be used in
@@ -376,7 +380,8 @@ notebook. Finally, label \textit{LW} is used to give a conform line width in plo
 We instantiate object \textit{tank} by running the \acrshort{omc} Server with the following command:
 
 \begin{lstlisting}
-	tank = ModelicaSystem('WaterTank.mo','WaterTank.ModWaterTank')
+  tank = ModelicaSystem('WaterTank.mo',
+                       'WaterTank.ModWaterTank')
 \end{lstlisting}
 
 Next, we are interested in which \textit{quantities} are available in the model. Python prompt \textit{>>>} is used when Jupyter
@@ -384,18 +389,18 @@ notebook actually uses \textit{In[*]} — where \textit{*} is some number, while
 with \textit{Out[*]}.
 
 \begin{lstlisting}
-	>>> q = tank.getQuantities()
-	>>> type(q)
-	list
-	>>> len(q)
-	11
-	>>> q[0]
-	{'Changeable': 'true', 
-	'Description': 'Mass in tank, kg',
-	'Name': 'm',
-	'Value': None,
-	'Variability': 'continuous'}
-	>>> pd.DataFrame(q)
+  >>> q = tank.getQuantities()
+  >>> type(q)
+  list
+  >>> len(q)
+  11
+  >>> q[0]
+  {'Changeable': 'true', 
+  'Description': 'Mass in tank, kg',
+  'Name': 'm',
+  'Value': None,
+  'Variability': 'continuous'}
+  >>> pd.DataFrame(q)
 \end{lstlisting}
 
 The last command leads Jupyter notebook to typeset a tabular presentation of the quantities, Figure \ref{fig:pythontypesetting}. The results
@@ -410,12 +415,12 @@ in Figure \ref{fig:pythontypesetting} should be compared to the Modelica model i
 Next, we check the simulation options:
 
 \begin{lstlisting}
-	>>> tank.getSimulationOptions()
-	{'solver': 'dassl',
-	'startTime': 0.0,
-	'stepSize': 0.002,
-	'stopTime': 1.0,
-	'tolerance': 1e-06}
+  >>> tank.getSimulationOptions()
+  {'solver': 'dassl',
+  'startTime': 0.0,
+  'stepSize': 0.002,
+  'stopTime': 1.0,
+  'tolerance': 1e-06}
 \end{lstlisting}
 
 It should be observed that the \textit{stepSize} is the frequency at which solutions are stored, and is not the step
@@ -427,7 +432,7 @@ avoid storing a large volume of information.
 To this end, we want to simulate the system for a long time, until the level reaches a steady state. Possible inputs are:
 
 \begin{lstlisting}
-	>>> tank.getInputs(){'md_i': None}
+  >>> tank.getInputs(){'md_i': None}
 \end{lstlisting}
 
 where value None implies that the available input, $md_i$, has not yet been set. We could use \textit{None} as input, which will be interpreted as zero. 
@@ -435,41 +440,41 @@ But let us instead set $\dot{m}_i = 3$, simulate for a long time, and change the
 parameter $h (0)$ to the steady state value of $h$:
 
 \begin{lstlisting}
-	>>> tank.setInputs(md_i=3)
-	>>> tank.setSimulationOptions\
-	(stopTime=1e4, stepSize=10)
-	>>> tank.simulate()
-	>>> h = tank.getSolutions('h')
-	>>> tank.setParameters(h_0 = h[-1])
+  >>> tank.setInputs(md_i=3)
+  >>> tank.setSimulationOptions(stopTime=1e4, 
+                                stepSize=10)
+  >>> tank.simulate()
+  >>> h = tank.getSolutions('h')
+  >>> tank.setParameters(h_0 = h[-1])
 \end{lstlisting}
 
 Next, we set back the stop time to 10, and specify an input sequence with a couple of jumps:
 
 \begin{lstlisting}
-	>>> tank.setSimulationOptions\(stopTime=10, stepSize=0.02)
-	>>> tank.setInputs(md_i = [(0,3),(2,3),(2,4),(6,4),(6,2),(10,2)])
+  >>> tank.setSimulationOptions(stopTime=10, 
+                               stepSize=0.02)
+  >>> tank.setInputs(md_i = [(0,3),(2,3),(2,4),
+                            (6,4),(6,2),(10,2)])
 \end{lstlisting}
 
-Finally, we simulate the model with the time varying input, and plot the result:
+Finally, we simulate the model with the time varying input, and plot the result.
 
 \begin{lstlisting}
-	>>> tank.simulate()
-	>>> tm, h = tank.getSolutions('time','h')
-	>>> plt.plot(tm,h,linewidth=LW,color='blue', label=r'$h$')
-	>>> plt.title('Water tank level')
-	>>> plt.xlabel(r'time $t$ [s]')
-	>>> plt.ylabel(r'$h$ [dm]')
+  >>> tank.simulate()
+  >>> tm, h = tank.getSolutions('time','h')
+  >>> plt.plot(tm,h,linewidth=LW,color='blue',
+               label=r'$h$')
+  >>> plt.title('Water tank level')
+  >>> plt.xlabel(r'time $t$ [s]')
+  >>> plt.ylabel(r'$h$ [dm]')
 \end{lstlisting}
 
-The result is displayed in Figure \ref{fig:pythonwatertanklevelplot}.
+The result is displayed in Figure \ref{fig:pythonwatertanklevelsensitivityplot}.
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{python_water_tank_level_plot.png}
 	\caption{Tank level when starting from steady state, and $\dot{m}_i(t)$ varies in a straight line between the points $(tj,\dot{m}_i(t_j ))$
 		given by the list $[(0; 3); (2; 3); (2; 4); (6; 4); (6; 2); (10; 2)]$.}
-	\label{fig:pythonwatertanklevelplot}
-	\includegraphics[width=\linewidth]{python_water_tank_level_sensitivity_plot.png}
-	\caption{Uncertainty in tank level with a 5\% uncertainty in valve constant $K$. The input is the same as in Figure \ref{fig:pythonwatertanklevelplot}}
 	\label{fig:pythonwatertanklevelsensitivityplot}
 \end{figure}
 
@@ -480,38 +485,40 @@ It is of interest to study how the model behavior varies with varying uncertain 
 valve constant $K$. This can be done as follows:
 
 \begin{lstlisting}
-	>>> par = tank.getParameters()
-	>>> K = par['K']
-	>>> KK = K + (nr.randn(10)-0.5)*K/20
-	>>> tank.simulate()
-	>>> tm, h = tank.getSolutions('time','h')
-	>>> plt.plot(tm,h,linewidth = LW,color = 'red', label=r'$h$')
-	>>> for k in KK:
-		tank.setParameters(K=k);
-		tank.simulate()
-		tm, h = tank.getSolutions('time','h')
-		plt.plot(tm,h,linewidth=LW,
-		color='red',linestyle='dotted',label='_nolabel_')
-	>>> plt.title('Tank level sensitivity')
-	>>> plt.xlabel(r'time $t$ [s]')
-	>>> plt.ylabel(r'$h$ [dm]')
-	>>> plt.legend()
+  >>> par = tank.getParameters()
+  >>> K = par['K']
+  >>> KK = K + (nr.randn(10)-0.5)*K/20
+  >>> tank.simulate()
+  >>> tm, h = tank.getSolutions('time','h')
+  >>> plt.plot(tm,h,linewidth = LW,
+              color = 'red', label=r'$h$')
+  >>> for k in KK:
+    tank.setParameters(K=k);
+    tank.simulate()
+    tm, h = tank.getSolutions('time','h')
+    plt.plot(tm,h,linewidth=LW,
+    color='red',linestyle='dotted',label='_nolabel_')
+  >>> plt.title('Tank level sensitivity')
+  >>> plt.xlabel(r'time $t$ [s]')
+  >>> plt.ylabel(r'$h$ [dm]')
+  >>> plt.legend()
 \end{lstlisting}
 
-The result is shown in Figure \ref{fig:pythonwatertanklevelsensitivityplot}.
+The result is shown in Figure \ref{fig:pythonwatertanklevelplot}.
 
+\begin{figure} [!h]
+	\includegraphics[width=\linewidth]{python_water_tank_level_sensitivity_plot.png}
+	\caption{Uncertainty in tank level with a 5\% uncertainty in valve constant $K$. The input is the same as in Figure \ref{fig:pythonwatertanklevelplot}}
+	\label{fig:pythonwatertanklevelplot}
+\end{figure}
+
+\clearpage
 \section{Integration of Wolfram SystemModeler Simulator in PySimulator}
 \label{sec:pythonwolframplugin}
 
 PySimulator supports simulation of models in FMU form or using different Modelica tools via extension
 plugins. Simulator plugins for tools such as Dymola, SimulationX, and OpenModelica are available from previous work. 
 This section presents a new simulator plugin developed for Wolfram SystemModeler.
-
-\begin{figure}
-	\includegraphics[width=\linewidth]{python_wolfram_communication.png}
-	\caption{Communication setup with SystemModeler.}
-	\label{fig:pythonwolframcommunication}
-\end{figure}
 
 Wolfram SystemModeler has its own symbolic mathematical computation program, Mathematica \cite{mathematica}, which can be used
 to perform actions via the Wolfram SystemModeler link (WSMLink) API \cite{wsmlink}, such as loading, compilation and 
@@ -533,12 +540,18 @@ it, and reading the simulation setting file (\textit{.sim}), which is an XML fil
 variables browser of PySimulator. The overall communication setup with SystemModeler is given in
 Figure \ref{fig:pythonwolframcommunication}.
 
+\begin{figure} [!h]
+	\includegraphics[width=\linewidth]{python_wolfram_communication.png}
+	\caption{Communication setup with SystemModeler.}
+	\label{fig:pythonwolframcommunication}
+\end{figure}
+
 All of the simulator plugins of PySimulator are controlled by the same Integrator Control GUI. The Wolfram
 SystemModeler simulator supports five different numerical integration methods (\textit{DASSL, CVODES,
 Euler, RungeKutta, and Heun}), all the simulation menu options are supported (\textit{error tolerance, fixed step
 size}, etc.), see Figure \ref{fig:pythonintegratorcontrol}.
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{python_integrator_control.png}
 	\caption{Integrator Control of PySimulator with integration algorithms of SystemModeler plugin.}
 	\label{fig:pythonintegratorcontrol}
@@ -548,12 +561,12 @@ The \textit{start} and \textit{stop time} for the integration algorithm can be c
 can be selected. Depending on the integration algorithms the user can change the \textit{error tolerance} or the \textit{fixed step size}
 before running the simulation.
 
-It is also possible to simulate the list of models using the Wolfram plugin. The existing PySimulator interface automatically 
+It is also possible to simulate the list of models using the Wolfram plugin, see Figure \ref{fig:pythonlistofsimulatemodels}. The existing PySimulator interface automatically 
 includes the new plugin in the simulators list for simulating a list of models.
 
 \begin{landscape}
 \begin{figure}
-	\includegraphics[width=\linewidth]{python_list_of_simulate_models.png}
+	\includegraphics[width=\linewidth, height=11cm]{python_list_of_simulate_models.png}
 	\caption{List of simulate models via Wolfram plugin.}
 	\label{fig:pythonlistofsimulatemodels}
 \end{figure}

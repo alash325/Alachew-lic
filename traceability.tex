@@ -83,7 +83,7 @@ by HTTP URIs. A common protocol to perform creation (HTTP POST) and retrieval (H
 
 
 The traceability design and architecture is mainly being developed in the INTO-CPS project \cite{intocpspaper,intocps}, 
-which contains a set of tasks. One of these tasks is the design of traceability and model management with the following goals \ref{intocpskenneth}:
+which contains a set of tasks. One of these tasks is the design of traceability and model management with the following goals \cite{intocpskenneth}:
 
 \begin{itemize}
 \item Checking the realization of requirements in models
@@ -92,13 +92,9 @@ which contains a set of tasks. One of these tasks is the design of traceability 
 a system-wide view that is not solely limited to single tools
 \end{itemize}
 
-The Provenance (PROV) \cite{provluc} and \acrshort{oslc} standards presented in \cite{intocpsjohn})
-are used to support traceability activities. PROV is a set of documents built on the notation and relation of
-entities, activities, and agents.
+The design and architecture of traceability-related tools has recently been developed in \cite{intocpskenneth} and is shown in Figure \ref{fig:traceabilityarchitecture}. 
 
-The design and architecture of traceability-related tools has recently been developed in \cite{intocpskenneth} and is shown in Figure \ref{fig:traceabilityarchitecture}. Any modeling tool written in any programming language can use these traceability standards to support the traceability of activities performed within the tool and interact with other tools.
-
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{traceability_architecture.png}
 	\caption{Schematic architecture of traceability-related tools.}
 	\label{fig:traceabilityarchitecture}
@@ -113,8 +109,12 @@ modification, import model description in \acrshort{xml}) to the traceability Da
 \item[Traceability Daemon] The traceability Daemon provides an \acrshort{oslc} interface compliant with RESTful \cite{restfulleonardo} to store the traceability 
 information into the database and retrieve the traceability data from the database. It is launched and terminated by modeling tools.
 \item[Neo4j Graph Database] The Neo4j database \cite{neo4j} is a graph database to store the \acrshort{oslc} triples that make up the traceability data. 
-
 \end{description}
+
+The Provenance (PROV) \cite{provluc} and \acrshort{oslc} standards presented in \cite{intocpsjohn}
+are used to support traceability activities. PROV is a set of documents built on the notation and relation of
+entities, activities, and agents. Any modeling tool written in any programming language can use these traceability standards to support
+the traceability of activities performed within the tool and interact with other tools.
 
 \section{An Example of Integrated Tools for Cyber-Physical Model Development}
 \label{sec:tracaebilitytools}
@@ -123,13 +123,13 @@ OpenModelica has been successfully integrated with the INTO-CPS tool chain to tr
 during the system development process from high level requirements to simulation results. The tools involved
 are Overture, 20-sim, Modelio and RTTester. The tool chain as shown in Figure \ref{fig:traceabilitytools} is defined by the connections between the system architecture and the simulation via the model description \acrshort{xml} file and the \acrshort{fmu}.
 
-\begin{landscape}
-	\begin{figure}
-		\includegraphics[width=\linewidth]{traceability_tools.png}
-		\caption{An example of integrated tools to trace artifacts created during the system development process (Bandur et al, 2016).}
-		\label{fig:traceabilitytools}
-	\end{figure}
-\end{landscape}
+\begin{landscape} 
+ \begin{figure}
+  \includegraphics[width=\linewidth,height=11cm]{traceability_tools.png}
+  \caption{An example of integrated tools to trace artifacts created during the system development process (Bandur et al, 2016).}
+  \label{fig:traceabilitytools}  
+ \end{figure} 
+\end{landscape} 
 
 The \acrshort{sysml} Connection diagram defines the components of the system and their connections. The
 internals of these block instances are created in the various modeling tools and are exported as FMUs. 
@@ -137,9 +137,9 @@ The modeling tools support importing the interface definition (ports) of the blo
 diagram by importing a modelDescription.xml file containing the block name and its interface definition
 linked with requirements. All tools are storing information in Git and sending information about
 existing and created artifacts to the global database.
-
+ 
 \section{Traceability and Model Management in OpenModelica}
-\label{sec:tracaebilityactivities}
+\label{sec:tracaebilityactivities} 
 
 In the new work reported in this chapter, OpenModelica has been extended with support for traceability in the \acrshort{oslc} sense, 
 where traceability information is exchanged with external tools through a standardized interface and format. The implementation is based on
@@ -200,7 +200,7 @@ each of which is described in the following subsections.
 In preparation for the extension to support tracing for importing modelDescription.xml interface files, we 
 extended OpenModelica to support importing modelDescription.xml (See Figure \ref{fig:traceabilityimportfmu}). 
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{traceability_import_fmu.png}
 	\caption{A screen shot of the model description XML import operation.}
 	\label{fig:traceabilityimportfmu}
@@ -221,7 +221,7 @@ activities within the modeling tools. In order to achieve this objective, access
 required in OpenModelica. Therefore, the OpenModelica Connection Editor OMEdit has been enhanced to support Git version 
 control, as shown in Figure \ref{fig:traceabilitygit}.
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{traceability_git.png}
 	\caption{GUI of Git Integration in OpenModelica and functions available to create traceability URI.}
 	\label{fig:traceabilitygit}
@@ -245,7 +245,7 @@ modeling tools.
 
 As already mentioned in Section \ref{sec:tracaebilityactivities}, OpenModelica supports traceability in the \acrshort{oslc} sense, where
 traceability information is exchanged with external tools through a standardized interface and format. 
-The implementation is based on the architecture and a common interface defined in \cite{intocpskenneth} for 
+The implementation is based on the architecture and a common interface defined in \cite{intocpskenneth} for  
 exchanging traceability information. OpenModelica imports the modelDescription.xml and creates a Modelica model according to the \acrshort{fmu}
 interface. The generated Modelica model is completed with behavior for the \acrshort{sysml} block and the final model
 is exported in the \acrshort{fmu} form. The generated \acrshort{fmu} is then used in a whole-system simulation connected
@@ -255,9 +255,9 @@ the simulation via the INTO-CPS App. This whole chain is traced using \acrshort{
 We have designed a graphical user interface shown in Figure \ref{fig:traceabilitypush} which allows the user to record the
 traceability information and send it to the traceability Daemon (\acrshort{oslc} triples in \acrshort{json} format), describing the activity
 using the URIs generated in the GUI shown in Figure  \ref{fig:traceabilitygit}. The PROV and \acrshort{oslc} relations that are mainly used
-in this work can be found in \cite{intocpsjohn}.
+in this work can be found in \cite{intocpsjohn}.  
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{traceablity_URI_push.png}
 	\caption{GUI to send traceability information to the traceability Daemon.}
 	\label{fig:traceabilitypush}
@@ -266,6 +266,13 @@ in this work can be found in \cite{intocpsjohn}.
 These traces are then sent through the traceability Daemon to the database via HTTP POST http://localhost:8080/
 traces/push/json, where they are stored. Figure \ref{fig:traceabilitygraph} shows an example of traceability information 
 sent from OpenModelica to the traceability Daemon and visualized in the Neo4j database.
+
+Entities (e.g., Modelica files, FMUs, modelDescription XML file) are shown in green,
+actions (e.g., model creation, FMU export, modelDescription XML import) are shown in yellow,
+agents (e.g., users with the names {"Alachew"}, {"Adrian"}, {"Peter"}, and {"Adeel")} are shown in blue,
+and their relationships "what came from what" and "what used what" (e.g., "wasGeneratedBy", "wasDerivedFrom", "usedTool") are 
+shown with red arrows.
+
 \begin{landscape}
 \begin{figure}
 	\includegraphics[width=\linewidth]{traceability_graph.png}
@@ -273,12 +280,6 @@ sent from OpenModelica to the traceability Daemon and visualized in the Neo4j da
 	\label{fig:traceabilitygraph}
 \end{figure}
 \end{landscape}
-
-Entities (e.g., Modelica files, FMUs, modelDescription XML file) are shown in green,
-actions (e.g., model creation, FMU export, modelDescription XML import) are shown in yellow,
-agents (e.g., users with the names {"Alachew"}, {"Adrian"}, {"Peter"}, and {"Adeel")} are shown in blue,
-and their relationships "what came from what" and "what used what" (e.g., "wasGeneratedBy", "wasDerivedFrom", "usedTool") are 
-shown with red arrows.
 
 In order to view and analyze traceability data, we have also designed a graphical user interface, shown in
 Figure \ref{fig:traceabilityquery}, which allows the user to query traceability information (traces to and traces from) from the traceability
@@ -290,7 +291,7 @@ Daemon to the database (via HTTP GET):
 
 \end{itemize}
 
-\begin{figure}
+\begin{figure} [!h]
 	\includegraphics[width=\linewidth]{traceability_query.png}
 	\caption{GUI to query traceability information from the traceability Daemon.}
 	\label{fig:traceabilityquery}
